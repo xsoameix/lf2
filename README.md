@@ -1,6 +1,6 @@
 #   Getting Started
 
-Fork and download this repository by [this steps](https://help.github.com/articles/fork-a-repo).
+Fork and download this repository by [these steps](https://help.github.com/articles/fork-a-repo).
 
 Open the function you want to decomple, eg: `attack_process`
 
