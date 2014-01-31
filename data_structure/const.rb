@@ -65,3 +65,14 @@ const int julian_ball_dat   = 228
 const int julian_ball2_dat  = 229
 const int etc_dat           = 998
 const int broken_weapon_dat = 999
+
+const int character_type    = 0
+const int lignt_weapon_type = 1
+const int heavy_weapon_type = 2
+const int attack_type       = 3
+const int throw_weapon_type = 4
+const int criminal_type     = 5
+const int drink_type        = 6
+
+const byte facing_right     = 0
+const byte facing_left      = 0
