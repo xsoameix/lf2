@@ -1,5 +1,10 @@
 struct object
+  int    attacks               # 0x20
   double x_velocity            # 0x40
+  double y_velocity            # 0x48
+  double y_position            # 0x60
+  int    frame_id              # 0x70
+  int    frame_id              # 0x78
   int    frame_id              # 0x7C
   byte   facing                # 0x80
   int    cpoint_catcher        # 0x8C
@@ -7,10 +12,22 @@ struct object
   int    weapon_type           # 0x98
   int    weapon                # 0x9C
   int    holder                # 0xA0
+  int    fall                  # 0xB0
+  int    bdefend               # 0xB8
   byte   ?                     # 0xEB
   byte   vrest_of_objects[400] # 0xF0
   int    injured_of_attack[20] # 0x280
   byte   itr_of_attack[20]     # 0x2D0
   int    successful_attacks    # 0x2E4
+  int    clone                 # 0x2F4
+  int    hp                    # 0x2FC
+  int    dark_hp               # 0x300
+  int    bottle_hp             # 0x31C
   int    thrown_injury         # 0x320
+  int    armor_multiplier      # 0x340
+  int    _?                    # 0x344
+  int    total_attack          # 0x348
+  int    hp_lost               # 0x34C
+  int    owner                 # 0x354
+  int    kills                 # 0x358
   file   *file                 # 0x368
