@@ -76,4 +76,4 @@ struct global
   # file[62]: data\julian_ball2.dat
   # file[63]: data\etc.dat
   # file[64]: data\broken_weapon.dat
-  file   (*files)[65]
+  file   *(*files)[65]

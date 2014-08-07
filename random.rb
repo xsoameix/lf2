@@ -1,5 +1,6 @@
 # 0x00417170
 def random(unused, range)
+  # push esi
   # mov esi,dword ptr ss:[esp+C]
   # test esi,esi
   # jg short 0041717D
