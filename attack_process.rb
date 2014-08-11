@@ -1224,7 +1224,7 @@ def attack_process(attacker_id)
 
         # adjust injured's fall and set injured's frame
         if (fall > 60 and
-            not file-type == attack_type)
+            not file->type == attack_type)
           # mov dword ptr ds:[eax+B0],50
           # jmp 0042EC6D
           injured->fall = 80
@@ -1493,6 +1493,8 @@ def attack_process(attacker_id)
             # fldz
           end
         end
+        # set the injured's pic_x_gain
+
         # 0042ED77
         # mov ecx,dword ptr ds:[esi+edi*4+194]
         # cmp dword ptr ds:[ecx+B0],50
@@ -1842,6 +1844,84 @@ def attack_process(attacker_id)
           end
           # 0042F00A
           # mov eax,dword ptr ds:[esi+ebx*4+194]
+          # mov edx,dword ptr ds:[eax+368]
+          # cmp dword ptr ds:[edx+6F4],64
+          # jnz 0042F0A9
+          attacker = global->objects[attacker_id]
+          file = attacker->file
+
+          # cmp dword ptr ds:[eax+98],0
+          # jge short 0042F0A9
+
+          # attacker is a stick and being held
+          if (file->id == stick_dat and
+              attacker->weapon_type < 0)
+
+            # mov eax,dword ptr ds:[esi+edi*4+194]
+            # fstp st
+            # fld qword ptr ds:[eax+28]
+            # push 0D
+            # fmul qword ptr ds:[449278]
+            # fstp qword ptr ds:[eax+28]
+            # mov eax,dword ptr ds:[esi+edi*4+194]
+            # mov ecx,dword ptr ds:[eax+10]
+            # push ecx
+            # call 00417090
+            # fldz
+            # mov ecx,dword ptr ds:[esi+edi*4+194]
+            # fcom qword ptr ds:[ecx+28]
+            # add esp,8
+            # fstsw ax
+            # test ah,5
+            # jpe short 0042F081
+            injured = global->objects[injured_id]
+            args = Array.new 2
+            args[1] = 13
+            injured->pic_x_gain *= 2.5
+            injured = global->objects[injured_id]
+            args[0] = injured->x
+            func_417090 args
+            injured = global->objects[injured_id]
+
+            # fld qword ptr ds:[447A00]
+            # fcom qword ptr ds:[ecx+28]
+            # fstsw ax
+            # test ah,41
+            # jnz short 0042F07F
+            if (injured->pic_x_gain > 0 and
+                injured->pic_x_gain < 10.0)
+              # fstp qword ptr ds:[ecx+28]
+              # jmp short 0042F081
+              injured->pic_x_gain = 10.0
+            else
+              # 0042F07F
+              # fstp st
+            end
+
+            # 0042F081
+            # mov ecx,dword ptr ds:[esi+edi*4+194]
+            # fcom qword ptr ds:[ecx+28]
+            # fstsw ax
+            # test ah,41
+            # jnz short 0042F0A9
+            injured = global->objects[injured_id]
+
+            # fld qword ptr ds:[4482F8]
+            # fcom qword ptr ds:[ecx+28]
+            # fstsw ax
+            # test ah,5
+            # jpe short 0042F0A7
+
+            if (injured->pic_x_gain < 0 and
+                injured->pic_x_gain > -10.0)
+              # fstp qword ptr ds:[ecx+28]
+              # jmp short 0042F0A9
+              injured->pic_x_gain = -10.0
+            else
+              # 0042F0A7
+              # fstp st
+            end
+          end
         end
 
         # if attacker is flying, goto hitting_frame (10)
@@ -1892,8 +1972,11 @@ def attack_process(attacker_id)
         # je short 0042F183
 
         if (attacker_file->frames[frame_id].state == flying_state and
+            # flying object attack character
             (injured_file->type == character_type or
+             # flying object(not freeze bal) attack the one not being character
              attacker_file->id != freeze_ball_dat or
+             # flying freeze ball attack the one not being these objects
              (injured_file_id != john_ball_dat and
               injured_file_id != deep_ball_dat and
               injured_file_id != dennis_ball_dat and
@@ -1902,6 +1985,7 @@ def attack_process(attacker_id)
               injured_file_id != dennis_chase_dat and
               injured_file_id != jack_ball_dat and
               (injured_file_id != freeze_ball_dat or
+               # flying freeze ball attack the freeze ball not being rebounding
                injured->frame_id != rebounding_frame))))
           # 0042F141
           # mov dword ptr ds:[edx+70],0A
