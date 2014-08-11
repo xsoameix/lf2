@@ -11,6 +11,7 @@ struct object
   int    frame_id              # 0x78
   int    frame_id              # 0x7C
   byte   facing                # 0x80
+  int    wait_counter          # 0x88
   int    cpoint_catcher        # 0x8C
   int    cpoint_timer          # 0x90
   int    weapon_type           # 0x98

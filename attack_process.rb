@@ -1071,6 +1071,9 @@ def attack_process(attacker_id)
             451B68[_?] += injury
           end
         end
+
+        # set the injured's fall
+
         # 0042E9F3
         # mov eax,dword ptr ds:[esi+edi*4+194]
         # cmp dword ptr ds:[eax+2FC],0
@@ -1737,9 +1740,9 @@ def attack_process(attacker_id)
           # test ah,41
           # je short 0042EFC6
           injured = global->objects[injured_id]
-          if (itr->dvx.to_f > injured->x_velocity.abs * 0.55) or
-             (attacker->facing == facing_right and injured->pic_x_gain > 0) or
-             (attacker->facing == facing_left  and injured->pic_x_gain < 0)
+          if (itr->dvx.to_f > injured->x_velocity.abs * 0.55 or
+              attacker->facing == facing_right and injured->pic_x_gain > 0 or
+              attacker->facing == facing_left  and injured->pic_x_gain < 0)
             # 0042EFC6
             # cmp byte ptr ds:[ecx+80],0
             # fstp st(2)
@@ -1808,8 +1811,8 @@ def attack_process(attacker_id)
             # fstsw ax
             # test ah,41
             # jnz short 0042F008
-            if (attacker->facing == facing_left  and injured->x_velocity > 0) or
-               (attacker->facing == facing_right and injured->x_velocity < 0)
+            if (attacker->facing == facing_left  and injured->x_velocity > 0 or
+                attacker->facing == facing_right and injured->x_velocity < 0)
               # 0042EFB1
               # mov eax,dword ptr ds:[esi+edi*4+194]
               # fld qword ptr ds:[eax+40]
@@ -1840,7 +1843,91 @@ def attack_process(attacker_id)
           # 0042F00A
           # mov eax,dword ptr ds:[esi+ebx*4+194]
         end
+
+        # if attacker is flying, goto hitting_frame (10)
+
         # 0042F0A9
+        # mov edx,dword ptr ds:[esi+ebx*4+194]
+        # mov eax,dword ptr ds:[edx+70]
+        # mov ecx,dword ptr ds:[edx+368]
+        # imul eax,eax,178
+        # cmp dword ptr ds:[eax+ecx+7AC],0BB8
+        # jnz 0042F183
+        attacker = global->objects[attacker_id]
+        frame_id = attacker->frame_id
+        attacker_file = attacker->file
+
+        # mov eax,dword ptr ds:[esi+edi*4+194]
+        # mov eax,dword ptr ds:[eax+368]
+        injured = global->objects[injured_id]
+        injured_file = injured->file
+
+        # cmp dword ptr ds:[eax+6F8],0
+        # je short 0042F141
+        # cmp dword ptr ds:[ecx+6F4],0D1
+        # jnz short 0042F141
+        # mov eax,dword ptr ds:[eax+6F4]
+        injured_file_id = injured_file->id
+
+        # cmp eax,0C8
+        # je 0042F183
+        # cmp eax,0CB
+        # je short 0042F183
+        # cmp eax,0CD
+        # je short 0042F183
+        # cmp eax,0CE
+        # je short 0042F183
+        # cmp eax,0CF
+        # je short 0042F183
+        # cmp eax,0D7
+        # je short 0042F183
+        # cmp eax,0D8
+        # je short 0042F183
+        # cmp eax,0D1
+        # jnz short 0042F141
+        # mov eax,dword ptr ds:[esi+edi*4+194]
+        injured = global->objects[injured_id]
+
+        # cmp dword ptr ds:[eax+70],28
+        # je short 0042F183
+
+        if (attacker_file->frames[frame_id].state == flying_state and
+            (injured_file->type == character_type or
+             attacker_file->id != freeze_ball_dat or
+             (injured_file_id != john_ball_dat and
+              injured_file_id != deep_ball_dat and
+              injured_file_id != dennis_ball_dat and
+              injured_file_id != woody_ball_dat and
+              injured_file_id != davis_ball_dat and
+              injured_file_id != dennis_chase_dat and
+              injured_file_id != jack_ball_dat and
+              (injured_file_id != freeze_ball_dat or
+               injured->frame_id != rebounding_frame))))
+          # 0042F141
+          # mov dword ptr ds:[edx+70],0A
+          # mov ecx,dword ptr ds:[esi+ebx*4+194]
+          # mov dword ptr ds:[ecx+88],0
+          # mov edx,dword ptr ds:[esi+ebx*4+194]
+          # fst qword ptr ds:[edx+40]
+          # mov eax,dword ptr ds:[esi+ebx*4+194]
+          # mov ecx,dword ptr ds:[eax+70]
+          # mov edx,dword ptr ds:[eax+368]
+          # imul ecx,ecx,178
+          # fild dword ptr ds:[ecx+edx+7BC]
+          # fstp qword ptr ds:[eax+50]
+          attacker->frame_id = hitting_frame
+          attacker = global->objects[attacker_id]
+          attacker->wait_counter = 0
+          attacker = global->objects[attacker_id]
+          attacker->x_velocity = 0
+          attacker = global->objects[attacker_id]
+          frame_id = attacker->frame_id
+          file = attacker->file
+          attacker->z_velocity = file->frames[frame_id].dvy
+        end
+        # 0042F183
+        # mov eax,dword ptr ds:[esi+edi*4+194]
+        # cmp dword ptr ds:[eax+B0],50
       else
         # 0042FDF2
       end
