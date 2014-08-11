@@ -17,6 +17,7 @@ struct object
   int    weapon                # 0x9C
   int    holder                # 0xA0
   int    fall                  # 0xB0
+  int    shaking               # 0xB4
   int    bdefend               # 0xB8
   byte   ?                     # 0xEB
   byte   vrest_of_objects[400] # 0xF0
@@ -34,4 +35,5 @@ struct object
   int    hp_lost               # 0x34C
   int    owner                 # 0x354
   int    kills                 # 0x358
+  int    team                  # 0x364
   file   *file                 # 0x368
