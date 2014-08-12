@@ -55,7 +55,9 @@ def attack_process(attacker_id)
     hurtable = file->frames[frame_id].hurtable
 
     # injured is caught, but is not hurtable
-    if cpoint_kind == 2 and cpoint_catcher_id == injured_id and not hurtable == 0
+    if (cpoint_kind == caught_kind and
+        cpoint_catcher_id == injured_id and
+        hurtable == false)
       next
     end
     itr_id = @itr_id
@@ -78,14 +80,14 @@ def attack_process(attacker_id)
     end
     # 0042E29F
     attacker = global->objects[attacker_id]
-    holder_id = attacker->holder
+    holder_id = attacker->holder_id
     holder = global->objects[holder_id]
     @holder_id = holder_id
 
     # attacker is a weapon being held
     if (itr->kind == 5 and
         attacker->weapon_type < 0 and
-        holder->weapon == attacker_id)
+        holder->weapon_id == attacker_id)
       frame_id = holder->frame_id
       file = holder->file
       attaking = file->frames[frame_id].attaking
@@ -168,16 +170,16 @@ def attack_process(attacker_id)
     end
     # 0042E461
     injured = global->objects[injured_id]
-    weapon_id = injured->weapon
+    weapon_id = injured->weapon_id
     weapon = global->objects[weapon_id]
 
     # injured is holding a heavy weapon
     if (injured->weapon_type == heavy_weapon_type and
         itr->kind == 0 and
-        weapon->holder == injured and
+        weapon->holder_id == injured and
         weapon->weapon_type == - heavy_weapon_type)
       injured = global->objects[injured_id]
-      weapon_id = injured->weapon
+      weapon_id = injured->weapon_id
       attacker = global->objects[attacker_id]
       attacker->vrest_of_objects[weapon_id] = 45
       injured = global->objects[injured_id]
@@ -190,9 +192,9 @@ def attack_process(attacker_id)
       weapon = global->objects[weapon_id]
       weapon->weapon_type = false
       frames_range = 6
-      frame_id = random 236, frames_range
+      frame_id = func_417170_random frames_range
       injured = global->objects[injured_id]
-      weapon_id = injured->weapon
+      weapon_id = injured->weapon_id
       weapon = global->objects[weapon_id]
       injured->frame_id = frame_id
       injured = global->objects[injured_id]
@@ -892,6 +894,246 @@ def attack_process(attacker_id)
           attacker->z_velocity = file->frames[frame_id].dvy
         end
         # 0042F183
+        injured = global->objects[injured_id]
+        if injured->fall == 80
+          itr = @itr
+          dvy = itr->dvy
+          file = injured->file
+          type = file->type
+          @dvy = dvy
+          if dvy == 0
+            # 0042F1FB
+
+            # 0042F205
+            if ((type != heavy_weapon_type and
+                 type != attack_type) or
+                 itr->fall > 40)
+              # 0042F20B
+              # fsub qword ptr ds:[447A50]
+              injured = global->objects[injured_id]
+              injured->y_accl -= 7.0
+            end
+          else
+
+            # 0042F1BC
+            if ((type != heavy_weapon_type and
+                 type != attack_type) or
+                 itr->fall > 40)
+              # 0042F1C2
+              injured = global->objects[injured_id]
+              injured->y_accl += @dvy
+            end
+            # 0042F1D3
+            injured = global->objects[injured_id]
+            if __ftol2_sse(injured->y + injured->y_accl) > 0
+              injured = global->objects[injured_id]
+              injured->y_accl = 12.0
+            end
+          end
+          # 0042F21E
+          injured = global->objects[injured_id]
+
+          # 0042F239
+          if ((injured->facing == facing_right and injured->pic_x_gain <= 0) or
+              (injured->facing == facing_left and injured->pic_x_gain >= 0))
+            # 0042F248
+            injured->frame_id = falling_back_frame
+          else
+            # 0042F251
+            injured->frame_id = falling_front_frame
+          end
+          # 0042F258
+          injured = global->objects[injured_id]
+          weapon_id = injured->weapon_id
+          weapon = global->objects[weapon_id]
+          if (injured->weapon_type > 0 and
+              injured_id == weapon->holder_id)
+            weapon_id = injured->weapon_id
+            attacker = global->objects[attacker_id]
+            attacker->vrest_of_objects[weapon_id] = 45
+            injured = global->objects[injured_id]
+            weapon_id = injured->weapon_id
+            injured->vrest_of_objects[weapon_id] = 30
+          end
+        end
+        # 0042F2A7
+        attacker = global->objects[attacker_id]
+        if attacker->shaking >= 0
+          attacker->shaking = 3
+        end
+        # 0042F2C1
+        injured = global->objects[injured_id]
+        injured->shaking = -3
+        itr = @itr
+        if (itr->arest < 4 and
+            itr->vrest == 0)
+          attacker = global->objects[attacker_id]
+          attacker->arest = 4
+        else
+          # 0042F2F7
+          attacker = global->objects[attacker_id]
+          attacker->arest = itr->arest
+        end
+        # 0042F304
+        if itr->vrest > 0
+          injured = global->objects[injured_id]
+          injured->vrest_of_objects[attacker_id] = itr->vrest
+        end
+        # 0042F31B
+        injured = global->objects[injured_id]
+        frame_id = injured->frame_id
+        file = injured->file
+        cpoint_kind = file->frames[frame_id].cpoint_kind
+        injured = global->objects[injured_id]
+        cpoint_timer_id = injured->cpoint_timer
+        cpoint_timer = global->objects[cpoint_timer_id]
+        cpoint_catcher_id = cpoint_timer->cpoint_catcher
+        frame_id = injured->frame_id
+        file = injured->file
+        front_hurt_act = file->frames[frame_id].front_hurt_act
+        if (cpoint_kind == caught_kind and
+            cpoint_catcher_id == injured and
+            injured->fall != 80 and
+            front_hurt_act != 0)
+          attacker = global->objects[attacker_id]
+          if injured->facing != attacker->facing
+            frame_id = injured->frame_id
+            file = injured->file
+            front_hurt_act = file->frames[frame_id].front_hurt_act
+            injured->frame_id = front_hurt_act
+          else
+            # 0042F3B1
+            frame_id = injured->frame_id
+            file = injured->file
+            back_hurt_act = file->frames[frame_id].back_hurt_act
+            injured->frame_id = back_hurt_act
+          end
+        end
+        # 0042F3CA
+        injured = global->objects[injured_id]
+        if injured->fall == 80
+          injured->fall = 0
+        end
+        # 0042F3E4
+        attacker = global->objects[attacker_id]
+        if attacker->weapon_type < 0
+          holder_id = attacker->holder_id
+          holder = global->objects[holder_id]
+          holder->shaking = attacker->shaking
+        end
+        # 0042F40D
+        attacker = global->objects[attacker_id]
+        frame_id = attacker->frame_id
+        file = attacker->file
+        state = file->frames[frame_id].state
+        if state == throwing_state
+          attacker = global->objects[attacker_id]
+          attacker->frame_id = func_417170_random 16
+          injured = global->objects[injured_id]
+          attacker = global->objects[attacker_id]
+          attacker->x_velocity = - injured->pic_x_gain * 0.5
+          attacker = global->objects[attacker_id]
+          attacker->y_velocity = - 4.0
+          attacker = global->objects[attacker_id]
+          injured = global->objects[injured_id]
+          if (attacker->file->type == throw_weapon_type and
+              injured->file->type == throw_weapon_type)
+            attacker->pic_x_gain = - injured->pic_x_gain
+          end
+          # 0042F4AB
+        end
+        # 0042F4AD
+        injured = global->objects[injured_id]
+        file = injured->file
+        if file->type == lignt_weapon_type
+          injured->? = 1
+          injured = global->objects[injured_id]
+          injured->frame_id = func_417170_random 16
+          attacker = global->objects[attacker_id]
+          injured = global->objects[injured_id]
+          injured->team = attacker->team
+        end
+        # 0042F501
+        injured = global->objects[injured_id]
+        file = injured->file
+        if (file->type == throw_weapon_type or
+            file->type == drink_type)
+          attacker = global->objects[attacker_id]
+          attacker->vrest_of_objects[injured_id] = 30
+          attacker->? = 1
+          injured = global->objects[injured_id]
+          injured->frame_id = func_417170_random 16
+          attacker = global->objects[attacker_id]
+          injured = global->objects[injured_id]
+          injured->team = attacker->team
+        end
+        # 0042F572
+        injured = global->objects[injured_id]
+        file = injured->file
+        if file->type == heavy_weapon_type
+          injured->? = 1
+          attacker = global->objects[attacker_id]
+          if attacker->weapon_type == - heavy_weapon_type
+            itr = @itr
+            if (itr->fall > 40 or
+                itr->effect == 4)
+              # 0042F5CE
+              holder_id = attacker->holder_id
+              holder = global->objects[holder_id]
+              holder->vrest_of_objects[injured_id] = 19
+            else
+              holder_id = attacker->holder_id
+              holder = global->objects[holder_id]
+              holder->vrest_of_objects[injured_id] = 3
+            end
+          elsif (
+            # 0042F5E5
+            itr = @itr
+            file = attacker->file
+            file->type != heavy_weapon_type
+          )
+            if (itr->fall > 40 or
+                itr->effect == 4)
+              # 0042F60D
+              attacker->vrest_of_objects[injured_id] = 19
+            else
+              attacker->vrest_of_objects[injured_id] = 3
+            end
+          end
+          # 0042F615
+          attacker = global->objects[attacker_id]
+          injured = global->objects[injured_id]
+          injured->facing = attacker->facing
+          injured = global->objects[injured_id]
+          if (itr->fall > 40 or
+              injured->y < 0 or
+              itr->effect == 4)
+            # 0042F651
+            injured = global->objects[injured_id]
+            injured->frame_id = func_417170_random 6
+          else
+            injured->frame_id = 20
+          end
+          # 0042F66E
+          attacker = global->objects[attacker_id]
+          injured = global->objects[injured_id]
+          injured->team = attacker->team
+        end
+        # 0042F688
+        attacker = global->objects[attacker_id]
+        injured = global->objects[injured_id]
+        if (attacker->file->id == henry_arrow1_dat and
+            injured->file->type == character_type)
+          global->is_object_exists[attacker] = false
+        end
+        # 0042F6BC
+        attacker = global->objects[attacker_id]
+        injured = global->objects[injured_id]
+        if (attacker->file->id == john_biscuit_dat and
+            injured->file->type == character_type)
+          attacker->hp = 0
+        end
+        # 0042F6F5
       else
         # 0042FDF2
       end

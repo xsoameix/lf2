@@ -3,6 +3,7 @@ struct object
   int    y                     # 0x14
   int    attacks               # 0x20
   double pic_x_gain            # 0x28
+  double y_accl                # 0x30
   double x_velocity            # 0x40
   double y_velocity            # 0x48
   double z_velocity            # 0x50
@@ -15,12 +16,13 @@ struct object
   int    cpoint_catcher        # 0x8C
   int    cpoint_timer          # 0x90
   int    weapon_type           # 0x98
-  int    weapon                # 0x9C
-  int    holder                # 0xA0
+  int    weapon_id             # 0x9C
+  int    holder_id             # 0xA0
   int    fall                  # 0xB0
   int    shaking               # 0xB4
   int    bdefend               # 0xB8
   byte   ?                     # 0xEB
+  int    arest                 # 0xEC
   byte   vrest_of_objects[400] # 0xF0
   int    injured_of_attack[20] # 0x280
   byte   itr_of_attack[20]     # 0x2D0

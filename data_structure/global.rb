@@ -1,4 +1,5 @@
 struct global
+  int    game_state
   bool   is_object_exists[400]
 
   # objects

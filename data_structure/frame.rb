@@ -2,6 +2,13 @@ struct frame
   int    state                 # 0x8
   double dvy                   # 0x18
   int    cpoint_kind           # 0x88
+  case cpoint_kind
+  when catching_kind
+    int    injury              # 0x94
+  when caught_kind
+    int    front_hurt_act      # 0x94
+    int    back_hurt_act       # 0x98
+  end
   int    hurtable              # 0xB4
   int    attaking              # 0xE8
   int    itrs_size             # 0x128

@@ -109,3 +109,6 @@ const int front_injured_frame    = 222
 const int back_injured_frame     = 224
 
 const int not_clone              = -1
+
+const int catching_kind          = 1
+const int caught_kind            = 2

@@ -38,10 +38,23 @@ Jump if ST(0) > source
     test ah,41 (C3 and C0)
     je short 0042EFC6
 
+or
+
+    fcom source
+    fstsw ax
+    test ah,41 (C3 and C0)
+    jpe short 0042F251
+
 Jump if ST(0) >= source
 
-    fld qword ptr ds:[448308]
-    fcomp qword ptr ds:[ecx+40]
+    fcomp source
     fstsw ax
     test ah,5 (C2 and C0)
     jpe short 0042EE20
+
+or
+
+    fcom source
+    fstsw ax
+    test ah,1 (C0)
+    je short 0042F248
