@@ -30,7 +30,7 @@ struct object
   int    clone                 # 0x2F4
   int    hp                    # 0x2FC
   int    dark_hp               # 0x300
-  int    bottle_hp             # 0x31C
+  int    drink_hp              # 0x31C
   int    thrown_injury         # 0x320
   int    armor_multiplier      # 0x340
   int    _?                    # 0x344

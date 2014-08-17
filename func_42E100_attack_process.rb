@@ -1122,12 +1122,12 @@ def attack_process(attacker_id)
           # jnz short 0042EA65
           injured = global->objects[injured_id]
           injury = itr->injury
-          injured->bottle_hp -= injury
+          injured->drink_hp -= injury
           if itr->bdefend == 100
             # mov eax,dword ptr ds:[esi+edi*4+194]
             # mov dword ptr ds:[eax+31C],-1
             injured = global->objects[injured_id]
-            injured->bottle_hp = -1
+            injured->drink_hp = -1
           end
         end
         # 0042EA65
