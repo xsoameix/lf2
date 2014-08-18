@@ -1,5 +1,5 @@
 # 0x0042E100
-def attack_process(attacker_id)
+def func_42E100_attack_process(global, attacker_id)
   # push ebp
   # mov ebp,esp
   # and esp,FFFFFFF8
@@ -42,7 +42,7 @@ def attack_process(attacker_id)
   # cmp edx,dword ptr ds:[eax+2E4]
   # mov dword ptr ss:[esp+24],edx
   # jl 0042E146
-  for(; @attack_id < attacker->succuessful_attacks; @attack_id++) {
+  for (; @attack_id < attacker->succuessful_attacks; @attack_id++)
     # 0042E146
     # mov eax,dword ptr ds:[esi+ebx*4+194]
     attacker = global->objects[attacker_id]
@@ -2563,5 +2563,5 @@ def attack_process(attacker_id)
     else
       # 0043056E
     end
-  }
+  end
 end

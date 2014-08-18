@@ -1,13 +1,16 @@
 struct object
   int    x                     # 0x10
   int    y                     # 0x14
+  int    z                     # 0x18
   int    attacks               # 0x20
   double pic_x_gain            # 0x28
   double y_accl                # 0x30
   double x_velocity            # 0x40
   double y_velocity            # 0x48
   double z_velocity            # 0x50
+  double x_position            # 0x58
   double y_position            # 0x60
+  double z_position            # 0x68
   int    frame_id              # 0x70
   int    frame_id              # 0x78
   int    frame_id              # 0x7C

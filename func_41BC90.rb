@@ -27,7 +27,7 @@ def func_41BC90(...)
   file = object->file
   state = file->frames[frame_id].state
   if (state == teleport_to_team_state and _450BD8 == 0)
-    func_403270_teleport object_id, teleport_to_team
+    func_403270_teleport global, object_id, teleport_to_team
   end
   # 0041E3C6
 

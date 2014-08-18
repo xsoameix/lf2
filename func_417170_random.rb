@@ -1,5 +1,5 @@
 # 0x00417170
-def random(unused, range)
+def func_417170_random(unused, range)
   # push esi
   # mov esi,dword ptr ss:[esp+C]
   # test esi,esi

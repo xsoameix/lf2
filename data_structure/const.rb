@@ -117,3 +117,5 @@ const int caught_kind             = 2
 
 const int teleport_to_enemy       = 1
 const int teleport_to_team        = 2
+
+const int max_objects_size        = 400

@@ -1,5 +1,5 @@
 # 0x0042E100
-def attack_process(attacker_id)
+def func_42E100_attack_process(global, attacker_id)
   attacker = global->objects[attacker_id]
   frame_id = attacker->frame_id
   file = attacker->file
@@ -11,7 +11,7 @@ def attack_process(attacker_id)
   $fpu_st0 = 0
 
   # 00431A9B
-  for(; @attack_id < attacker->succuessful_attacks; @attack_id++) {
+  for (; @attack_id < attacker->succuessful_attacks; @attack_id++)
     # 0042E146
     attacker = global->objects[attacker_id]
     attacker_frame = @attacker_frame
@@ -484,10 +484,10 @@ def attack_process(attacker_id)
           # 0042EA3E
           injured = global->objects[injured_id]
           injury = itr->injury
-          injured->bottle_hp -= injury
+          injured->drink_hp -= injury
           if itr->bdefend == 100
             injured = global->objects[injured_id]
-            injured->bottle_hp = -1
+            injured->drink_hp = -1
           end
         end
         # 0042EA65
@@ -1140,5 +1140,5 @@ def attack_process(attacker_id)
     else
       # 0043056E
     end
-  }
+  end
 end
