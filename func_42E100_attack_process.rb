@@ -183,7 +183,10 @@ def func_42E100_attack_process(global, attacker_id)
     state = file->frames[frame_id].state
 
     # injured is burning
-    if kind == 0 and itr->effect == 21 and (state == fire_state or state == burn_run_state)
+    if (kind == itr_normal_attack and
+        itr->effect == flame_effect and
+        (state == fire_state or
+         state == burn_run_state))
       break
     end
     # 0042E29F
@@ -205,7 +208,7 @@ def func_42E100_attack_process(global, attacker_id)
     @holder_id = holder_id
 
     # attacker is a weapon being held
-    if (itr->kind == 5 and
+    if (itr->kind == itr_strength_list and
         attacker->weapon_type < 0 and
         holder->weapon_id == attacker_id)
       # mov eax,ecx
@@ -362,14 +365,14 @@ def func_42E100_attack_process(global, attacker_id)
     # jnz short 0042E461
 
     # attacker is a man being thrown away
-    if attacker->thrown_injury > 0 and itr->kind == 4
+    if attacker->thrown_injury > 0 and itr->kind == itr_thrown
       # mov dword ptr ds:[edx],0
       # mov ecx,dword ptr ds:[esi+ebx*4+194]
       # fcom qword ptr ds:[ecx+40]
       # fstsw ax
       # test ah,5
       # jpe short 0042E446
-      itr->kind = 0
+      itr->kind = itr_normal_attack
       attacker = global->objects[attacker_id]
 
       # cmp byte ptr ds:[ecx+80],1
@@ -424,7 +427,7 @@ def func_42E100_attack_process(global, attacker_id)
 
     # injured is holding a heavy weapon
     if (injured->weapon_type == heavy_weapon_type and
-        itr->kind == 0 and
+        itr->kind == itr_normal_attack and
         weapon->holder_id == injured and
         weapon->weapon_type == - heavy_weapon_type)
       # mov edx,dword ptr ds:[esi+edi*4+194]
@@ -542,7 +545,7 @@ def func_42E100_attack_process(global, attacker_id)
     file = injured->file
 
     # attacker is a john's force field
-    if (itr->kind == 9 and
+    if (itr->kind == itr_forcefield and
         (file->type == character_type or
          file->frames[frame_id].state == throwing_state or
          file->frames[frame_id].state == in_the_sky_state_2))
@@ -552,7 +555,7 @@ def func_42E100_attack_process(global, attacker_id)
       # mov eax,dword ptr ds:[ecx+368]
       # cmp dword ptr ds:[eax+6F8],0
       # jnz short 0042E61C
-      itr->kind = 0
+      itr->kind = itr_normal_attack
       injured = global->objects[injured_id]
       file = injured->file
 
@@ -574,7 +577,7 @@ def func_42E100_attack_process(global, attacker_id)
     # jnz 0043056E
 
     # normal attack
-    if itr->kind == 0
+    if itr->kind == itr_normal_attack
       # mov edx,dword ptr ss:[esp+C]
       itr = @itr
 
@@ -817,10 +820,10 @@ def func_42E100_attack_process(global, attacker_id)
               # knight can defend attack when these conditions hold:
               injured_file_id == knight_dat and
               injured->bdefend <= 15 and
-              effect_type != 2 and
-              effect_type != 3 and
-              effect != 2 and
-              effect != 3 and
+              effect_type != fire_type_effect and
+              effect_type != freeze_type_effect and
+              effect != fire_effect and
+              effect != freeze_effect and
               attacker_file_id != john_biscuit_dat and
               attacker_file_id != henry_arrow2_dat
             ) and
@@ -828,10 +831,10 @@ def func_42E100_attack_process(global, attacker_id)
               # louis can defend attack when these conditions hold:
               injured_file_id == louis_dat and
               injured->bdefend < 1 and
-              effect_type != 2 and
-              effect_type != 3 and
-              effect != 2 and
-              effect != 3 and
+              effect_type != fire_type_effect and
+              effect_type != freeze_type_effect and
+              effect != fire_effect and
+              effect != freeze_effect and
               attacker_file_id != john_biscuit_dat and
               attacker_file_id != henry_arrow2_dat and
               (injured->frame_id < 20 or
@@ -1087,7 +1090,7 @@ def func_42E100_attack_process(global, attacker_id)
         # cmp dword ptr ds:[ecx+2C],4
         # jnz short 0042EA17
         if (injured->hp <= 0 or
-            itr->effect == 4)
+            itr->effect == shrafe_effect)
           # 0042EA0D
           # mov dword ptr ds:[eax+B0],50
           injured->fall = 80
@@ -1384,7 +1387,7 @@ def func_42E100_attack_process(global, attacker_id)
           # cmp dword ptr ds:[ecx+2C],0
           # jnz short 0042ECF4
           itr = @itr
-          if itr->effect == 0
+          if itr->effect == punch_effect
             # mov ecx,dword ptr ds:[eax+B0]
             # fstp st
             # cmp ecx,50
@@ -1426,7 +1429,7 @@ def func_42E100_attack_process(global, attacker_id)
           # cmp dword ptr ds:[edx+2C],1
           # jnz short 0042ED77
           itr = @itr
-          if itr->effect == 1
+          if itr->effect == bleed_effect
             # mov eax,dword ptr ds:[esi+edi*4+194]
             # fstp st
             # mov ecx,dword ptr ds:[eax+B0]
@@ -1625,7 +1628,8 @@ def func_42E100_attack_process(global, attacker_id)
 
           # cmp eax,17
           # je short 0042EEF0
-          if (effect == 22 or effect == 23)
+          if (effect == firen_explosion_effect or
+              effect == julian_explosion_effect)
             # 0042EEF0
             # mov eax,dword ptr ds:[esi+edi*4+194]
             # fild dword ptr ds:[edx+14]
@@ -2429,7 +2433,7 @@ def func_42E100_attack_process(global, attacker_id)
             # je short 0042F5CE
             itr = @itr
             if (itr->fall > 40 or
-                itr->effect == 4)
+                itr->effect == shrafe_effect)
               # 0042F5CE
               # mov eax,dword ptr ds:[eax+A0]
               # mov edx,dword ptr ds:[esi+eax*4+194]
@@ -2462,7 +2466,7 @@ def func_42E100_attack_process(global, attacker_id)
             # cmp dword ptr ds:[ecx+2C],4
             # je short 0042F60D
             if (itr->fall > 40 or
-                itr->effect == 4)
+                itr->effect == shrafe_effect)
               # 0042F60D
               # mov byte ptr ds:[eax+edi+F0],13
               attacker->vrest_of_objects[injured_id] = 19
@@ -2492,7 +2496,7 @@ def func_42E100_attack_process(global, attacker_id)
           # je short 0042F651
           if (itr->fall > 40 or
               injured->y < 0 or
-              itr->effect == 4)
+              itr->effect == shrafe_effect)
             # 0042F651
             # push 6
             # fstp st

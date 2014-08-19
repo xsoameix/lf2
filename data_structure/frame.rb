@@ -1,4 +1,5 @@
 struct frame
+  int    present               # 0x0
   int    state                 # 0x8
   double dvy                   # 0x18
   int    cpoint_kind           # 0x88

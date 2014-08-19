@@ -75,7 +75,10 @@ def func_42E100_attack_process(global, attacker_id)
     state = file->frames[frame_id].state
 
     # injured is burning
-    if kind == 0 and itr->effect == 21 and (state == fire_state or state == burn_run_state)
+    if (kind == itr_normal_attack and
+        itr->effect == flame_effect and
+        (state == fire_state or
+         state == burn_run_state))
       break
     end
     # 0042E29F
@@ -85,7 +88,7 @@ def func_42E100_attack_process(global, attacker_id)
     @holder_id = holder_id
 
     # attacker is a weapon being held
-    if (itr->kind == 5 and
+    if (itr->kind == itr_strength_list and
         attacker->weapon_type < 0 and
         holder->weapon_id == attacker_id)
       frame_id = holder->frame_id
@@ -149,8 +152,8 @@ def func_42E100_attack_process(global, attacker_id)
     attacker = global->objects[attacker_id]
 
     # attacker is a man being thrown away
-    if attacker->thrown_injury > 0 and itr->kind == 4
-      itr->kind = 0
+    if attacker->thrown_injury > 0 and itr->kind == itr_thrown
+      itr->kind = itr_normal_attack
       attacker = global->objects[attacker_id]
 
       # adjust the direction
@@ -175,7 +178,7 @@ def func_42E100_attack_process(global, attacker_id)
 
     # injured is holding a heavy weapon
     if (injured->weapon_type == heavy_weapon_type and
-        itr->kind == 0 and
+        itr->kind == itr_normal_attack and
         weapon->holder_id == injured and
         weapon->weapon_type == - heavy_weapon_type)
       injured = global->objects[injured_id]
@@ -225,12 +228,12 @@ def func_42E100_attack_process(global, attacker_id)
     file = injured->file
 
     # attacker is a john's force field
-    if (itr->kind == 9 and
+    if (itr->kind == itr_forcefield and
         (file->type == character_type or
          file->frames[frame_id].state == throwing_state or
          file->frames[frame_id].state == in_the_sky_state_2))
       # 0042E5E1
-      itr->kind = 0
+      itr->kind = itr_normal_attack
       injured = global->objects[injured_id]
       file = injured->file
 
@@ -245,7 +248,7 @@ def func_42E100_attack_process(global, attacker_id)
     # 0042E60E
 
     # normal attack
-    if itr->kind == 0
+    if itr->kind == itr_normal_attack
       itr = @itr
 
       # 0042E61C
@@ -326,10 +329,10 @@ def func_42E100_attack_process(global, attacker_id)
               # knight can defend attack when these conditions hold:
               injured_file_id == knight_dat and
               injured->bdefend <= 15 and
-              effect_type != 2 and
-              effect_type != 3 and
-              effect != 2 and
-              effect != 3 and
+              effect_type != fire_type_effect and
+              effect_type != freeze_type_effect and
+              effect != fire_effect and
+              effect != freeze_effect and
               attacker_file_id != john_biscuit_dat and
               attacker_file_id != henry_arrow2_dat
             ) and
@@ -337,10 +340,10 @@ def func_42E100_attack_process(global, attacker_id)
               # louis can defend attack when these conditions hold:
               injured_file_id == louis_dat and
               injured->bdefend < 1 and
-              effect_type != 2 and
-              effect_type != 3 and
-              effect != 2 and
-              effect != 3 and
+              effect_type != fire_type_effect and
+              effect_type != freeze_type_effect and
+              effect != fire_effect and
+              effect != freeze_effect and
               attacker_file_id != john_biscuit_dat and
               attacker_file_id != henry_arrow2_dat and
               (injured->frame_id < 20 or
@@ -467,7 +470,7 @@ def func_42E100_attack_process(global, attacker_id)
         injured = global->objects[injured_id]
         itr = @itr
         if (injured->hp <= 0 or
-            itr->effect == 4)
+            itr->effect == shrafe_effect)
           # 0042EA0D
           injured->fall = 80
         end
@@ -606,7 +609,7 @@ def func_42E100_attack_process(global, attacker_id)
         type = file->type
         if type == character_type
           itr = @itr
-          if itr->effect == 0
+          if itr->effect == punch_effect
             fall = injured->fall
             args = Array.new 2
             if fall == 80
@@ -626,7 +629,7 @@ def func_42E100_attack_process(global, attacker_id)
           end
           # 0042ECF4
           itr = @itr
-          if itr->effect == 1
+          if itr->effect == bleed_effect
             injured = global->objects[injured_id]
             fall = injured->fall
             x = injured->x
@@ -710,7 +713,8 @@ def func_42E100_attack_process(global, attacker_id)
         )
           itr = @itr
           effect = itr->effect
-          if (effect == 22 or effect == 23)
+          if (effect == firen_explosion_effect or
+              effect == julian_explosion_effect)
             # 0042EEF0
             injured = global->objects[injured_id]
             injured = global->objects[injured_id]
@@ -1076,7 +1080,7 @@ def func_42E100_attack_process(global, attacker_id)
           if attacker->weapon_type == - heavy_weapon_type
             itr = @itr
             if (itr->fall > 40 or
-                itr->effect == 4)
+                itr->effect == shrafe_effect)
               # 0042F5CE
               holder_id = attacker->holder_id
               holder = global->objects[holder_id]
@@ -1093,7 +1097,7 @@ def func_42E100_attack_process(global, attacker_id)
             file->type != heavy_weapon_type
           )
             if (itr->fall > 40 or
-                itr->effect == 4)
+                itr->effect == shrafe_effect)
               # 0042F60D
               attacker->vrest_of_objects[injured_id] = 19
             else
@@ -1107,7 +1111,7 @@ def func_42E100_attack_process(global, attacker_id)
           injured = global->objects[injured_id]
           if (itr->fall > 40 or
               injured->y < 0 or
-              itr->effect == 4)
+              itr->effect == shrafe_effect)
             # 0042F651
             injured = global->objects[injured_id]
             injured->frame_id = func_417170_random 6

@@ -93,6 +93,7 @@ const int dash_state              = 5
 const int defend_state            = 7
 const int broken_defend_state     = 8
 const int catching_state          = 9
+const int picked_caught_state     = 10
 const int injured_state_1         = 11
 const int falling_state           = 12
 const int ice_state               = 13
@@ -106,6 +107,8 @@ const int in_the_sky_state_1      = 1000
 const int throwing_state          = 1002
 const int in_the_sky_state_2      = 2000
 
+const int freeze_frame_start      = 200
+const int freeze_frame_end        = 202
 const int slightly_injured_frame  = 220
 const int front_injured_frame     = 222
 const int back_injured_frame      = 224
@@ -115,7 +118,55 @@ const int not_clone               = -1
 const int catching_kind           = 1
 const int caught_kind             = 2
 
+const int itr_normal_attack       = 0
+const int itr_catch_injured       = 1
+const int itr_pick_up_weapon      = 2
+const int itr_catch               = 3
+const int itr_thrown              = 4
+const int itr_strength_list       = 5
+const int itr_super_punch         = 6
+const int itr_rowing_pick         = 7
+const int itr_heal                = 8
+const int itr_forcefield          = 9
+const int itr_flute               = 10
+const int itr_float               = 11
+const int itr_stop                = 14
+const int itr_fly                 = 15
+const int itr_freeze              = 16
+
+const int punch_effect            = 0
+const int bleed_effect            = 1
+const int fire_type_effect        = 2 # means effect % 10 == 2
+const int fire_effect             = 2
+const int burn_effect             = 20
+const int flame_effect            = 21
+const int firen_explosion_effect  = 22
+const int julian_explosion_effect = 23
+const int freeze_type_effect      = 3 # means effect % 10 == 3
+const int freeze_effect           = 3
+const int column_effect           = 30
+const int shrafe_effect           = 4
+
 const int teleport_to_enemy       = 1
 const int teleport_to_team        = 2
 
 const int max_objects_size        = 400
+
+const int no_team                 = 0
+const int team_1                  = 1
+const int team_2                  = 2
+const int team_3                  = 3
+const int team_4                  = 4
+const int stage_enemy_team        = 5
+const int player_1_team           = 10
+const int player_2_team           = 11
+const int player_3_team           = 12
+const int player_4_team           = 13
+const int computer_1_team         = 20
+const int computer_2_team         = 21
+const int computer_3_team         = 22
+const int computer_4_team         = 23
+const int computer_5_team         = 24
+const int computer_6_team         = 25
+const int computer_7_team         = 26
+const int computer_8_team         = 27

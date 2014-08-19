@@ -1,4 +1,5 @@
 struct object
+  int    invincible_time       # 0x8
   int    x                     # 0x10
   int    y                     # 0x14
   int    z                     # 0x18
@@ -12,6 +13,7 @@ struct object
   double y_position            # 0x60
   double z_position            # 0x68
   int    frame_id              # 0x70
+  int    frame_id              # 0x74
   int    frame_id              # 0x78
   int    frame_id              # 0x7C
   byte   facing                # 0x80
