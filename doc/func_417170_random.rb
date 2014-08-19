@@ -1,5 +1,5 @@
 # 0x00417170
-def random(unused, range)
+def func_417170_random(unused, range)
   if range <= 0
     return 0
   end
