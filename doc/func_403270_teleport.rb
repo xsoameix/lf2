@@ -1,6 +1,5 @@
 # 0x00403270
 def func_403270_teleport(global, teleported_id, teleport_to)
-  # or edx,FFFFFFFF
   @closest_object_id = -1
   @farthest_object_id = -1
   case teleport_to

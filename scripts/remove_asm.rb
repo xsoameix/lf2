@@ -14,7 +14,7 @@ end
 def opcodes
   ["push", "pop",
    "mov", "movsx", "lea", "cdq",
-   "and", "xor",
+   "and", "or", "xor",
    "add", "sub", "imul", "idiv", "neg", "sete",
    "shr", "sar", "shl",
    "cmp", "test",
