@@ -516,7 +516,7 @@ def func_417400_does_attack_success(global, attacker_id, injured_id, mode)
         frame_id = injured->frame_id
         file = injured->file
         injured_state = file->frames[frame_id]
-        if (attacker->weapon_type == 0 and
+        if (attacker->weapon_type == null and
             attacker->click_attack and
             !attacker->holding_attack and
             injured_state == on_ground_state_1 and

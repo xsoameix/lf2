@@ -1231,7 +1231,7 @@ def func_417400_does_attack_success(global, attacker_id, injured_id, mode)
 
         # cmp ebp,2
         # je short 00417E70
-        if (attacker->weapon_type == 0 and
+        if (attacker->weapon_type == null and
             attacker->click_attack and
             !attacker->holding_attack and
             injured_state == on_ground_state_1 and

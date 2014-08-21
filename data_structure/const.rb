@@ -85,6 +85,8 @@ const int drink_type              = 6
 const byte facing_right           = 0
 const byte facing_left            = 1
 
+const byte null                   = 0
+
 const byte false                  = 0
 const byte true                   = 1
 
