@@ -26,19 +26,25 @@ struct object
   int    fall                  # 0xB0
   int    shaking               # 0xB4
   int    bdefend               # 0xB8
-  byte   ?                     # 0xEB
+  byte   holding_attack        # 0xCA
+  byte   click_left            # 0xCF
+  byte   click_right           # 0xD0
+  byte   click_attack          # 0xD1
+  byte   _unknownEB            # 0xEB
   int    arest                 # 0xEC
   byte   vrest_of_objects[400] # 0xF0
   int    injured_of_attack[20] # 0x280
   byte   itr_of_attack[20]     # 0x2D0
   int    successful_attacks    # 0x2E4
+  int    attackable_distance   # 0x2E8
+  int    vulnerable_distance   # 0x2EC
   int    clone                 # 0x2F4
   int    hp                    # 0x2FC
   int    dark_hp               # 0x300
   int    drink_hp              # 0x31C
   int    thrown_injury         # 0x320
   int    armor_multiplier      # 0x340
-  int    _?                    # 0x344
+  int    _unknown344           # 0x344
   int    total_attack          # 0x348
   int    hp_lost               # 0x34C
   int    owner                 # 0x354

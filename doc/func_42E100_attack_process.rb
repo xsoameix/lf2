@@ -37,7 +37,7 @@ def func_42E100_attack_process(global, attacker_id)
     file = injured->file
 
     # injured is a weapon, attack, criminal or drink
-    if attacker->? == 0 or not file->type == character_type
+    if attacker->_unknownEB == 0 or not file->type == character_type
       break
     end
     injured = global->objects[injured_id]
@@ -142,7 +142,7 @@ def func_42E100_attack_process(global, attacker_id)
       @bdefend        = itr->bdefend
       @injury         = itr->injury
       @zwidth         = itr->zwidth
-      @?              = itr->?
+      @_unknown4C     = itr->_unknown4C
 
       # 0042E409
       itr = &@kind
@@ -427,13 +427,13 @@ def func_42E100_attack_process(global, attacker_id)
             owner = global->objects[owner_id]
             owner->kills += 1
             injured = global->objects[injured_id]
-            _? = injured->_?
+            _unknown344 = injured->_unknown344
             if (injured->clone == not_clone and
-                _? > 0 and
-                _? < 3)
+                _unknown344 > 0 and
+                _unknown344 < 3)
               injured = global->objects[injured_id]
-              _? = injured->_?
-              451B60[_?] += 1
+              _unknown344 = injured->_unknown344
+              451B60[_unknown344] += 1
             end
           end
           # 0042E955
@@ -456,11 +456,11 @@ def func_42E100_attack_process(global, attacker_id)
           end
           # 0042E9C9
           injured = global->objects[injured_id]
-          _? = injured->_?
-          if _? > 0 and _? < 3
+          _unknown344 = injured->_unknown344
+          if _unknown344 > 0 and _unknown344 < 3
             injured = global->objects[injured_id]
-            _? = injured->_?
-            451B68[_?] += injury
+            _unknown344 = injured->_unknown344
+            451B68[_unknown344] += injury
           end
         end
 
@@ -598,10 +598,10 @@ def func_42E100_attack_process(global, attacker_id)
         # 0042EC6D
         attacker = global->objects[attacker_id]
         file = attacker->file
-        _? = file->_?
+        _unknownAC = file->_unknownAC
         if (file->type == attack_type and
-            _? > -1)
-          func_416FB0 attacker->x, _?
+            _unknownAC > -1)
+          func_416FB0 attacker->x, _unknownAC
         end
         # 0042EC9F
         injured = global->objects[injured_id]
@@ -652,11 +652,11 @@ def func_42E100_attack_process(global, attacker_id)
         else
           # 0042ED48
           if (type > character_type and
-              file->_? > -1)
+              file->_unknownA4 > -1)
             injured = global->objects[injured_id]
             file = injured->file
-            _? = file->_?
-            func_416FB0 injured->x, _?
+            _unknownA4 = file->_unknownA4
+            func_416FB0 injured->x, _unknownA4
 
             # 0042ED75
           end
@@ -1050,7 +1050,7 @@ def func_42E100_attack_process(global, attacker_id)
         injured = global->objects[injured_id]
         file = injured->file
         if file->type == lignt_weapon_type
-          injured->? = 1
+          injured->_unknownEB = 1
           injured = global->objects[injured_id]
           injured->frame_id = func_417170_random 16
           attacker = global->objects[attacker_id]
@@ -1064,7 +1064,7 @@ def func_42E100_attack_process(global, attacker_id)
             file->type == drink_type)
           attacker = global->objects[attacker_id]
           attacker->vrest_of_objects[injured_id] = 30
-          attacker->? = 1
+          attacker->_unknownEB = 1
           injured = global->objects[injured_id]
           injured->frame_id = func_417170_random 16
           attacker = global->objects[attacker_id]
@@ -1075,7 +1075,7 @@ def func_42E100_attack_process(global, attacker_id)
         injured = global->objects[injured_id]
         file = injured->file
         if file->type == heavy_weapon_type
-          injured->? = 1
+          injured->_unknownEB = 1
           attacker = global->objects[attacker_id]
           if attacker->weapon_type == - heavy_weapon_type
             itr = @itr

@@ -88,6 +88,10 @@ const byte facing_left            = 1
 const byte false                  = 0
 const byte true                   = 1
 
+const byte bool_initial           = 0
+const byte bool_true              = 1
+const byte bool_false             = 2
+
 const int jump_state              = 4
 const int dash_state              = 5
 const int defend_state            = 7
@@ -105,7 +109,9 @@ const int teleport_to_enemy_state = 400
 const int teleport_to_team_state  = 401
 const int in_the_sky_state_1      = 1000
 const int throwing_state          = 1002
+const int on_ground_state_1       = 1004
 const int in_the_sky_state_2      = 2000
+const int on_ground_state_2       = 2004
 
 const int freeze_frame_start      = 200
 const int freeze_frame_end        = 202
@@ -170,3 +176,12 @@ const int computer_5_team         = 24
 const int computer_6_team         = 25
 const int computer_7_team         = 26
 const int computer_8_team         = 27
+
+const int vs_mode                 = 0
+const int stage_mode              = 1
+const int champion_1_on_1_mode    = 2
+const int champion_2_on_2_mode    = 3
+const int battle_mode             = 4
+const int demo_mode               = 5
+const int playback_recoding_mode  = 6
+const int quit_mode               = 7

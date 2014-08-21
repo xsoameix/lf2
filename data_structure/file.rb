@@ -28,9 +28,9 @@ struct file
   # beer_dat:          0x41(65)
   # milk_dat:          0x41(65)
   # stone_dat:         0x43(67)
-  int    _?                    # 0xA4
+  int    _unknownA4            # 0xA4
 
-  int    _?                    # 0xAC
+  int    _unknownAC            # 0xAC
   itr    attaking_itrs[4]      # 0xC4
   int    id                    # 0x6F4
   int    type                  # 0x6F8

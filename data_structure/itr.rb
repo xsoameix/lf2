@@ -18,4 +18,4 @@ struct itr
   int    bdefend         # 0x40
   int    injury          # 0x44
   int    zwidth          # 0x48
-  int    ?               # 0x4C
+  int    _unknown4C      # 0x4C

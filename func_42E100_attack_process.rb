@@ -100,7 +100,7 @@ def func_42E100_attack_process(global, attacker_id)
     file = injured->file
 
     # injured is a weapon, attack, criminal or drink
-    if attacker->? == 0 or not file->type == character_type
+    if attacker->_unknownEB == 0 or not file->type == character_type
       break
     end
     # mov eax,dword ptr ds:[esi+edi*4+194]
@@ -347,7 +347,7 @@ def func_42E100_attack_process(global, attacker_id)
       @bdefend        = itr->bdefend
       @injury         = itr->injury
       @zwidth         = itr->zwidth
-      @?              = itr->?
+      @_unknown4C     = itr->_unknown4C
 
       # 0042E409
       # lea edx,dword ptr ss:[esp+28]
@@ -999,19 +999,19 @@ def func_42E100_attack_process(global, attacker_id)
             owner = global->objects[owner_id]
             owner->kills += 1
             injured = global->objects[injured_id]
-            _? = injured->_?
+            _unknown344 = injured->_unknown344
 
             # cmp eax,3
             # jge short 0042E955
             if (injured->clone == not_clone and
-                _? > 0 and
-                _? < 3)
+                _unknown344 > 0 and
+                _unknown344 < 3)
               # mov eax,dword ptr ds:[esi+edi*4+194]
               # mov eax,dword ptr ds:[eax+344]
               # add dword ptr ds:[eax*4+451B60],edx
               injured = global->objects[injured_id]
-              _? = injured->_?
-              451B60[_?] += 1
+              _unknown344 = injured->_unknown344
+              451B60[_unknown344] += 1
             end
           end
           # 0042E955
@@ -1063,17 +1063,17 @@ def func_42E100_attack_process(global, attacker_id)
           # test eax,eax
           # jle short 0042E9F3
           injured = global->objects[injured_id]
-          _? = injured->_?
+          _unknown344 = injured->_unknown344
 
           # cmp eax,3
           # jge short 0042E9F3
-          if _? > 0 and _? < 3
+          if _unknown344 > 0 and _unknown344 < 3
             # mov edx,dword ptr ds:[esi+edi*4+194]
             # mov eax,dword ptr ds:[edx+344]
             # add dword ptr ds:[eax*4+451B68],ecx
             injured = global->objects[injured_id]
-            _? = injured->_?
-            451B68[_?] += injury
+            _unknown344 = injured->_unknown344
+            451B68[_unknown344] += injury
           end
         end
 
@@ -1361,9 +1361,9 @@ def func_42E100_attack_process(global, attacker_id)
         # mov eax,dword ptr ds:[eax+AC]
         # cmp eax,-1
         # jle short 0042EC9F
-        _? = file->_?
+        _unknownAC = file->_unknownAC
         if (file->type == attack_type and
-            _? > -1)
+            _unknownAC > -1)
           # mov edx,dword ptr ds:[ecx+10]
           # fstp st
           # push eax
@@ -1371,7 +1371,7 @@ def func_42E100_attack_process(global, attacker_id)
           # call 00416FB0
           # fldz
           # add esp,8
-          func_416FB0 attacker->x, _?
+          func_416FB0 attacker->x, _unknownAC
         end
         # 0042EC9F
         # mov eax,dword ptr ds:[esi+edi*4+194]
@@ -1479,7 +1479,7 @@ def func_42E100_attack_process(global, attacker_id)
           # cmp dword ptr ds:[edx+A4],-1
           # jle short 0042ED77
           if (type > character_type and
-              file->_? > -1)
+              file->_unknownA4 > -1)
             # mov eax,dword ptr ds:[esi+edi*4+194]
             # fstp st
             # mov ecx,dword ptr ds:[eax+368]
@@ -1491,8 +1491,8 @@ def func_42E100_attack_process(global, attacker_id)
             # add esp,8
             injured = global->objects[injured_id]
             file = injured->file
-            _? = file->_?
-            func_416FB0 injured->x, _?
+            _unknownA4 = file->_unknownA4
+            func_416FB0 injured->x, _unknownA4
 
             # 0042ED75
             # fldz
@@ -2365,7 +2365,7 @@ def func_42E100_attack_process(global, attacker_id)
           # mov edx,dword ptr ds:[eax+364]
           # add esp,8
           # mov dword ptr ds:[ecx+364],edx
-          injured->? = 1
+          injured->_unknownEB = 1
           injured = global->objects[injured_id]
           injured->frame_id = func_417170_random 16
           attacker = global->objects[attacker_id]
@@ -2403,7 +2403,7 @@ def func_42E100_attack_process(global, attacker_id)
           # mov dword ptr ds:[eax+364],ecx
           attacker = global->objects[attacker_id]
           attacker->vrest_of_objects[injured_id] = 30
-          attacker->? = 1
+          attacker->_unknownEB = 1
           injured = global->objects[injured_id]
           injured->frame_id = func_417170_random 16
           attacker = global->objects[attacker_id]
@@ -2423,7 +2423,7 @@ def func_42E100_attack_process(global, attacker_id)
           # mov eax,dword ptr ds:[esi+ebx*4+194]
           # cmp dword ptr ds:[eax+98],-2
           # jnz short 0042F5E5
-          injured->? = 1
+          injured->_unknownEB = 1
           attacker = global->objects[attacker_id]
           if attacker->weapon_type == - heavy_weapon_type
             # mov ecx,dword ptr ss:[esp+C]
