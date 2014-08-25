@@ -20,7 +20,7 @@ def func_403270_teleport(global, teleported_id, teleport_to)
     # xor ebx,ebx
     # mov dword ptr ss:[esp+20],eax
     @min_distance = 10000
-    @object_ptr = &global->objects
+    @object_ptr = global->objects
 
     # the condition of the loop
     # 0040330E
@@ -160,7 +160,7 @@ def func_403270_teleport(global, teleported_id, teleport_to)
     # mov edx,dword ptr ss:[esp+1C]
     # xor ebx,ebx
     @max_distance = -1
-    @object_ptr = &global->objects
+    @object_ptr = global->objects
 
     # the condition of the loop
     # 0040341E
@@ -220,6 +220,7 @@ def func_403270_teleport(global, teleported_id, teleport_to)
         # mov dword ptr ss:[esp+10],ebx
         # mov dword ptr ss:[esp+14],esi
         @farthest_object_id = object_id
+        @max_distance = distance
       end
     end
     # mov eax,dword ptr ss:[esp+10]
@@ -284,9 +285,9 @@ def func_403270_teleport(global, teleported_id, teleport_to)
       teleported = global->objects[teleported_id]
       teleported = global->objects[teleported_id]
       teleported = global->objects[teleported_id]
-      teleported->x = teleported->x_position
-      teleported->y = teleported->y_position
-      teleported->z = teleported->z_position
+      teleported->x_position = teleported->x
+      teleported->y_position = teleported->y
+      teleported->z_position = teleported->z
     end
   else
     return
@@ -303,7 +304,8 @@ def func_403270_teleport(global, teleported_id, teleport_to)
   teleported->z_velocity = 0
   teleported = global->objects[teleported_id]
   teleported = global->objects[teleported_id]
-  teleported->x_velocity = teleported->y_velocity
+  teleported->x_velocity = 0
+  teleported->y_velocity = 0
 
   # 004034CC
   # pop edi

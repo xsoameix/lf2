@@ -7,7 +7,7 @@ def func_41BC90(...)
   # cmp byte ptr ds:[ebx+esi+4],0
   object_id = 0
   @object_id = object_id
-  object_ptr = &global->objects
+  object_ptr = global->objects
 
   # 0041E395
   # mov eax,dword ptr ds:[edi]

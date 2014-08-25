@@ -5,7 +5,7 @@ def func_403270_teleport(global, teleported_id, teleport_to)
   case teleport_to
   when teleport_to_enemy
     @min_distance = 10000
-    @object_ptr = &global->objects
+    @object_ptr = global->objects
 
     # the condition of the loop
     # 0040330E
@@ -65,7 +65,7 @@ def func_403270_teleport(global, teleported_id, teleport_to)
   when teleport_to_team
     # 00403396
     @max_distance = -1
-    @object_ptr = &global->objects
+    @object_ptr = global->objects
 
     # the condition of the loop
     # 0040341E
@@ -86,6 +86,7 @@ def func_403270_teleport(global, teleported_id, teleport_to)
           object->hp > 0 and
           distance > @max_distance)
         @farthest_object_id = object_id
+        @max_distance = distance
       end
     end
     if @farthest_object_id == -1
@@ -116,9 +117,9 @@ def func_403270_teleport(global, teleported_id, teleport_to)
       teleported = global->objects[teleported_id]
       teleported = global->objects[teleported_id]
       teleported = global->objects[teleported_id]
-      teleported->x = teleported->x_position
-      teleported->y = teleported->y_position
-      teleported->z = teleported->z_position
+      teleported->x_position = teleported->x
+      teleported->y_position = teleported->y
+      teleported->z_position = teleported->z
     end
   else
     return
@@ -128,7 +129,8 @@ def func_403270_teleport(global, teleported_id, teleport_to)
   teleported->z_velocity = 0
   teleported = global->objects[teleported_id]
   teleported = global->objects[teleported_id]
-  teleported->x_velocity = teleported->y_velocity
+  teleported->x_velocity = 0
+  teleported->y_velocity = 0
 
   # 004034CC
 end
