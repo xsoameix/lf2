@@ -18,7 +18,7 @@ def opcodes
    "add", "sub", "imul", "idiv", "neg", "sete",
    "shr", "sar", "shl",
    "cmp", "test",
-   "jg", "jge", "jl", "jle", "je", "jnz", "jpe", "jpo", "jmp",
+   "jg", "jge", "jl", "jle", "je", "jnz", "jpe", "jpo", "jns", "jmp",
    "call", "retn",
    "fld", "fldz", "fild", "fxch", "fst", "fstp",
    "fcom", "fcomp", "fstsw",

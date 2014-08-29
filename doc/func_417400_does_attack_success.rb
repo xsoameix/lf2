@@ -455,7 +455,6 @@ def func_417400_does_attack_success(global, attacker_id, injured_id, mode)
       end
       # 00417D21
       if @itr->kind == itr_catch_injured
-        # jns short 00417D38
         x_distance = attacker->x - @injured->x
         if x_distance > 0
           x_distance = - x_distance
