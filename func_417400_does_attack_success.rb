@@ -145,7 +145,7 @@ def func_417400_does_attack_success(global, attacker_id, injured_id, mode)
 
       # can only catch character
       if (@itr_kind == itr_catch and
-          injured_file != character_type)
+          injured_type != character_type)
         break
       end
       # 0041753D
@@ -964,18 +964,19 @@ def func_417400_does_attack_success(global, attacker_id, injured_id, mode)
         # mov eax,dword ptr ds:[eax+A0]
         # cmp dword ptr ss:[esp+48],eax
         # jnz short 00417C2F
-        if (attacker->weapon_type < 0 and
-            attacker->holder_id == injured_id)
-          # mov edi,7D0
-          # jmp short 00417C41
-          x_distance = 2000
-        else
-          # 00417C2F
-          # mov edx,dword ptr ds:[esi+eax*4+194]
-          # mov edi,dword ptr ds:[edx+10]
-          # sub edi,ecx
-          holder = global->objects[holder_id]
-          x_distance = holder->x - @injured->x
+        if attacker->weapon_type < 0
+          if attacker->holder_id == injured_id
+            # mov edi,7D0
+            # jmp short 00417C41
+            x_distance = 2000
+          else
+            # 00417C2F
+            # mov edx,dword ptr ds:[esi+eax*4+194]
+            # mov edi,dword ptr ds:[edx+10]
+            # sub edi,ecx
+            holder = global->objects[holder_id]
+            x_distance = holder->x - @injured->x
+          end
         end
         # 00417C3B
         # test edi,edi
@@ -1190,7 +1191,7 @@ def func_417400_does_attack_success(global, attacker_id, injured_id, mode)
           ((attacker->click_right and attacker->x <  injured->x) or
            (attacker->click_left  and attacker->x >= injured->x)
           ) and
-          injured_state == picked_caught_state and
+          injured_state == injured_state_2 and
           is_attack_success != bool_false)
         # mov ebp,1
         is_attack_success = bool_true

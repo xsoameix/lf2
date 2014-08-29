@@ -365,7 +365,7 @@ def func_42E100_attack_process(global, attacker_id)
               (
                 attacker_facing != injured->facing or
                 itr->dvx < 0 or
-                attacker_file_id == <_dat or
+                attacker_file_id == boomerang_dat or
                 attacker_file_id == jan_chase_dat or
                 attacker_file_id == firzen_chasef_dat or
                 attacker_file_id == firzen_chasei_dat

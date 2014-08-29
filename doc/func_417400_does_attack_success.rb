@@ -52,7 +52,7 @@ def func_417400_does_attack_success(global, attacker_id, injured_id, mode)
 
       # can only catch character
       if (@itr_kind == itr_catch and
-          injured_file != character_type)
+          injured_type != character_type)
         break
       end
       # 0041753D
@@ -400,13 +400,14 @@ def func_417400_does_attack_success(global, attacker_id, injured_id, mode)
           is_attack_success == bool_initial)
         attacker = global->objects[attacker_id]
         x_distance = attacker->x - @injured->x
-        if (attacker->weapon_type < 0 and
-            attacker->holder_id == injured_id)
-          x_distance = 2000
-        else
-          # 00417C2F
-          holder = global->objects[holder_id]
-          x_distance = holder->x - @injured->x
+        if attacker->weapon_type < 0
+          if attacker->holder_id == injured_id
+            x_distance = 2000
+          else
+            # 00417C2F
+            holder = global->objects[holder_id]
+            x_distance = holder->x - @injured->x
+          end
         end
         # 00417C3B
         if x_distance < 0
@@ -497,7 +498,7 @@ def func_417400_does_attack_success(global, attacker_id, injured_id, mode)
           ((attacker->click_right and attacker->x <  injured->x) or
            (attacker->click_left  and attacker->x >= injured->x)
           ) and
-          injured_state == picked_caught_state and
+          injured_state == injured_state_2 and
           is_attack_success != bool_false)
         is_attack_success = bool_true
       end
