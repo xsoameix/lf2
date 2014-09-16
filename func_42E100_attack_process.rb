@@ -2600,7 +2600,9 @@ def func_42E100_attack_process(global, attacker_id)
           file = attacker->file
           attacker_state = file->frames[frame_id].state
 
-          # if frame is changable
+          # if injured frame is changable
+          # eg. henry wind keeps flying
+          # eg. john biscuit keeps tracking when attacker isn't henry wind
           if (injured_state != henry_wind_state and
               (injured_state != john_biscuit_state or
                attacker_state == henry_wind_state))
@@ -2803,7 +2805,7 @@ def func_42E100_attack_process(global, attacker_id)
               # test ecx,ecx
               # jle short 0042FA1E
               # mov dword ptr ss:[esp+18],edx
-              _unknown_objects_size = _4D82380[@files]
+              _unknown_objects_size = * (_4D82380 + @files)
               @files = global->files
 
               # if attacker is freeze 
@@ -2918,7 +2920,7 @@ def func_42E100_attack_process(global, attacker_id)
                 # jle short 0042FB0E
                 # mov dword ptr ss:[esp+18],edx
                 @files = global->files
-                _unknown_objects_size = _4D82380[@files]
+                _unknown_objects_size = * (_4D82380 + @files)
 
                 # the condition of the loop below
                 # add eax,1
@@ -2984,11 +2986,188 @@ def func_42E100_attack_process(global, attacker_id)
                 injured->owner = holder->owner
               end # end if attacker is ice sword
             end # end if attacker is holding weapon
-            # 0042FB60
-          end # end if frame is changable
+          end # end if injured frame is changable
           # 0042FB60
+          # mov eax,dword ptr ds:[esi+edi*4+194]
+          # mov edx,dword ptr ds:[eax+70]
+          # mov eax,dword ptr ds:[eax+368]
+          # imul edx,edx,178
+          # mov ecx,0BBD
+          # cmp dword ptr ds:[edx+eax+7AC],ecx
+          # jnz short 0042FBA3
+          injured = global->objects[injured_id]
+          frame_id = injured->frame_id
+          file = injured->file
+          injured_state = file->frames[frame_id].state
+
+          # mov eax,dword ptr ds:[esi+ebx*4+194]
+          # mov edx,dword ptr ds:[eax+70]
+          # mov eax,dword ptr ds:[eax+368]
+          # imul edx,edx,178
+          # cmp dword ptr ds:[edx+eax+7AC],ecx
+          # je short 0042FBEA
+          attacker = global->objects[attacker_id]
+          frame_id = attacker->frame_id
+          file = attacker->file
+          attacker_state = file->frames[frame_id].state
+
+          # 0042FBA3
+          # mov eax,dword ptr ds:[esi+edi*4+194]
+          # mov edx,dword ptr ds:[eax+70]
+          # mov eax,dword ptr ds:[eax+368]
+          # imul edx,edx,178
+          # mov ecx,0BBE
+          # cmp dword ptr ds:[edx+eax+7AC],ecx
+          # jnz 0042FC5B
+          injured = global->objects[injured_id]
+          frame_id = injured->frame_id
+          file = injured->file
+          injured_state = file->frames[frame_id].state
+
+          # mov eax,dword ptr ds:[esi+ebx*4+194]
+          # mov edx,dword ptr ds:[eax+70]
+          # mov eax,dword ptr ds:[eax+368]
+          # imul edx,edx,178
+          # cmp dword ptr ds:[edx+eax+7AC],ecx
+          # jnz short 0042FC5B
+          attacker = global->objects[attacker_id]
+          frame_id = attacker->frame_id
+          file = attacker->file
+          attacker_state = file->frames[frame_id].state
+          if (injured_state == henry_wind_state and
+              attacker_state == henry_wind_state
+             ) or
+             (injured_state == john_biscuit_state and
+              attacker_state == henry_wind_state)
+             # 0042FBEA
+             # mov edx,dword ptr ds:[esi+edi*4+194]
+             # mov ecx,14
+             # mov dword ptr ds:[edx+70],ecx
+             # mov edx,dword ptr ds:[esi+edi*4+194]
+             # xor eax,eax
+             # mov dword ptr ds:[edx+88],eax
+             # mov edx,dword ptr ds:[esi+edi*4+194]
+             # fst qword ptr ds:[edx+30]
+             # mov edx,dword ptr ds:[esi+edi*4+194]
+             # fst qword ptr ds:[edx+28]
+             # mov edx,dword ptr ds:[esi+edi*4+194]
+             # fst qword ptr ds:[edx+38]
+             # mov edx,dword ptr ds:[esi+ebx*4+194]
+             # mov dword ptr ds:[edx+70],ecx
+             # mov ecx,dword ptr ds:[esi+ebx*4+194]
+             # mov dword ptr ds:[ecx+88],eax
+             # mov edx,dword ptr ds:[esi+ebx*4+194]
+             # fst qword ptr ds:[edx+30]
+             # mov eax,dword ptr ds:[esi+ebx*4+194]
+             # fst qword ptr ds:[eax+28]
+             # mov ecx,dword ptr ds:[esi+ebx*4+194]
+             # fst qword ptr ds:[ecx+38]
+             injured = global->objects[injured_id]
+             injured = global->objects[injured_id]
+             injured = global->objects[injured_id]
+             injured = global->objects[injured_id]
+             injured = global->objects[injured_id]
+             injured->frame_id = hit_frame
+             injured->wait_counter = 0
+             injured->y_accl
+             injured->pic_x_gain
+             injured->z_accl
+             attacker = global->objects[attacker_id]
+             attacker = global->objects[attacker_id]
+             attacker = global->objects[attacker_id]
+             attacker = global->objects[attacker_id]
+             attacker = global->objects[attacker_id]
+             attacker->frame_id = hit_frame
+             attacker->wait_counter = 0
+             attacker->y_accl
+             attacker->pic_x_gain
+             attacker->z_accl
+          end
+          # 0042FC5B
+          # mov eax,dword ptr ds:[esi+ebx*4+194]
+          # cmp dword ptr ds:[eax+98],0
+          # jge short 0042FC93
+          attacker = global->objects[attacker_id]
+
+          # attacker and its holder shaking
+          if attacker->weapon_type >= 0
+            # 0042FC93
+            # cmp dword ptr ds:[eax+B4],0
+            # jle short 0042FCAA
+            if attacker->shaking > 0
+              # mov edx,dword ptr ds:[eax+B4]
+              # neg edx
+              # mov dword ptr ds:[eax+B4],edx
+              attacker->shaking = - attacker->shaking
+            end
+          else
+            # mov eax,dword ptr ds:[eax+A0]
+            # mov edx,dword ptr ds:[esi+eax*4+194]
+            # cmp dword ptr ds:[edx+B4],0
+            # jle short 0042FCAA
+            holder_id = attacker->holder_id
+            holder = global->objects[holder_id]
+            if holder->shaking > 0
+              # mov eax,edx
+              # mov ecx,dword ptr ds:[eax+B4]
+              # neg ecx
+              # mov dword ptr ds:[eax+B4],ecx
+              # jmp short 0042FCAA
+              holder->shaking = - holder->shaking
+            end
+          end
         end # end if injured is attack
         # 0042FCAA
+        # mov eax,dword ptr ss:[esp+C]
+        # mov eax,dword ptr ds:[eax+2C]
+        # cmp eax,3
+        # je short 0042FCBB
+        # cmp eax,1E
+        # jnz short 0042FD1D
+        itr = @itr
+        effect = itr->effect
+
+        # 0042FCBB
+        # mov ecx,dword ptr ds:[esi+edi*4+194]
+        # mov edx,dword ptr ds:[ecx+368]
+        # cmp dword ptr ds:[edx+6F8],0
+        # jnz short 0042FD1D
+        injured = global->objects[injured_id]
+        file = injured->file
+        injured_type = file->type
+
+        # mov eax,ecx
+        # mov ecx,dword ptr ds:[eax+78]
+        # mov edx,dword ptr ds:[eax+368]
+        # imul ecx,ecx,178
+        # cmp dword ptr ds:[ecx+edx+7AC],0D
+        # je short 0042FD1D
+        frame_id = injured->frame_id3
+        file = injured->file
+        injured_state = file->frames[frame_id].state
+        if (effect == freeze_effect or
+            effect == column_effect) and
+            injured_type == character_type and
+            injured_state != ice_state
+          # mov dword ptr ds:[eax+70],0C8
+          # fstp st
+          # mov ecx,dword ptr ds:[esi+edi*4+194]
+          # mov dword ptr ds:[ecx+88],0
+          # mov edx,dword ptr ds:[esi+edi*4+194]
+          # mov eax,dword ptr ds:[edx+10]
+          # push 0E
+          # push eax
+          # call 00417090
+          # fldz
+          # add esp,8
+          injured->frame_id = freeze_frame_start
+          injured = global->objects[injured_id]
+          injured = global->objects[injured_id]
+          injured->wait_counter = 0
+          func_417090 injured->x, 14
+        end
+        # 0042FD1D
+        # 0042FDC6
       else
         # 0042FDF2
       end # end injured can be attacked when these conditions hold:

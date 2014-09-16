@@ -1156,7 +1156,9 @@ def func_42E100_attack_process(global, attacker_id)
           file = attacker->file
           attacker_state = file->frames[frame_id].state
 
-          # if frame is changable
+          # if injured frame is changable
+          # eg. henry wind keeps flying
+          # eg. john biscuit keeps tracking when attacker isn't henry wind
           if (injured_state != henry_wind_state and
               (injured_state != john_biscuit_state or
                attacker_state == henry_wind_state))
@@ -1244,7 +1246,7 @@ def func_42E100_attack_process(global, attacker_id)
               injured_file_id = file->id
 
               # 0042F9A6
-              _unknown_objects_size = _4D82380[@files]
+              _unknown_objects_size = * (_4D82380 + @files)
               @files = global->files
 
               # if attacker is freeze 
@@ -1303,7 +1305,7 @@ def func_42E100_attack_process(global, attacker_id)
                    injured_file_id == jack_ball_dat))
                 # 0042FAA6
                 @files = global->files
-                _unknown_objects_size = _4D82380[@files]
+                _unknown_objects_size = * (_4D82380 + @files)
 
                 # the condition of the loop below
                 if _unknown_objects_size > 0
@@ -1336,11 +1338,93 @@ def func_42E100_attack_process(global, attacker_id)
                 injured->owner = holder->owner
               end # end if attacker is ice sword
             end # end if attacker is holding weapon
-            # 0042FB60
-          end # end if frame is changable
+          end # end if injured frame is changable
           # 0042FB60
+          injured = global->objects[injured_id]
+          frame_id = injured->frame_id
+          file = injured->file
+          injured_state = file->frames[frame_id].state
+          attacker = global->objects[attacker_id]
+          frame_id = attacker->frame_id
+          file = attacker->file
+          attacker_state = file->frames[frame_id].state
+
+          # 0042FBA3
+          injured = global->objects[injured_id]
+          frame_id = injured->frame_id
+          file = injured->file
+          injured_state = file->frames[frame_id].state
+          attacker = global->objects[attacker_id]
+          frame_id = attacker->frame_id
+          file = attacker->file
+          attacker_state = file->frames[frame_id].state
+          if (injured_state == henry_wind_state and
+              attacker_state == henry_wind_state
+             ) or
+             (injured_state == john_biscuit_state and
+              attacker_state == henry_wind_state)
+             # 0042FBEA
+             injured = global->objects[injured_id]
+             injured = global->objects[injured_id]
+             injured = global->objects[injured_id]
+             injured = global->objects[injured_id]
+             injured = global->objects[injured_id]
+             injured->frame_id = hit_frame
+             injured->wait_counter = 0
+             injured->y_accl
+             injured->pic_x_gain
+             injured->z_accl
+             attacker = global->objects[attacker_id]
+             attacker = global->objects[attacker_id]
+             attacker = global->objects[attacker_id]
+             attacker = global->objects[attacker_id]
+             attacker = global->objects[attacker_id]
+             attacker->frame_id = hit_frame
+             attacker->wait_counter = 0
+             attacker->y_accl
+             attacker->pic_x_gain
+             attacker->z_accl
+          end
+          # 0042FC5B
+          attacker = global->objects[attacker_id]
+
+          # attacker and its holder shaking
+          if attacker->weapon_type >= 0
+            # 0042FC93
+            if attacker->shaking > 0
+              attacker->shaking = - attacker->shaking
+            end
+          else
+            holder_id = attacker->holder_id
+            holder = global->objects[holder_id]
+            if holder->shaking > 0
+              holder->shaking = - holder->shaking
+            end
+          end
         end # end if injured is attack
         # 0042FCAA
+        itr = @itr
+        effect = itr->effect
+
+        # 0042FCBB
+        injured = global->objects[injured_id]
+        file = injured->file
+        injured_type = file->type
+        frame_id = injured->frame_id3
+        file = injured->file
+        injured_state = file->frames[frame_id].state
+        if (effect == freeze_effect or
+            effect == column_effect) and
+            injured_type == character_type and
+            injured_state != ice_state
+          injured->frame_id = freeze_frame_start
+          injured = global->objects[injured_id]
+          injured = global->objects[injured_id]
+          injured->wait_counter = 0
+          func_417090 injured->x, 14
+        end
+        # 0042FD1D
+        # 0042FDC6
       else
         # 0042FDF2
       end # end injured can be attacked when these conditions hold:
