@@ -114,7 +114,11 @@ const int throwing_state          = 1002
 const int on_ground_state_1       = 1004
 const int in_the_sky_state_2      = 2000
 const int on_ground_state_2       = 2004
+const int henry_wind_state        = 3005
+const int john_biscuit_state      = 3006
 
+const int hit_frame               = 20
+const int rebounding_frame        = 40
 const int freeze_frame_start      = 200
 const int freeze_frame_end        = 202
 const int slightly_injured_frame  = 220

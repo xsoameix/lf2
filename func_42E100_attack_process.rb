@@ -42,6 +42,8 @@ def func_42E100_attack_process(global, attacker_id)
   # cmp edx,dword ptr ds:[eax+2E4]
   # mov dword ptr ss:[esp+24],edx
   # jl 0042E146
+
+  # attack loop
   for (; @attack_id < attacker->succuessful_attacks; @attack_id++)
     # 0042E146
     # mov eax,dword ptr ds:[esi+ebx*4+194]
@@ -2561,11 +2563,437 @@ def func_42E100_attack_process(global, attacker_id)
         # mov eax,dword ptr ds:[edx+368]
         # cmp dword ptr ds:[eax+6F8],3
         # jnz 0042FCAA
+        injured = global->objects[injured_id]
+
+        # if injured is attack
+        if injured->file->type == attack_type
+          # mov eax,edx
+          # mov edx,dword ptr ds:[eax+70]
+          # mov eax,dword ptr ds:[eax+368]
+          # imul edx,edx,178
+          # mov ecx,0BBD
+          # cmp dword ptr ds:[edx+eax+7AC],ecx
+          # je 0042FB60
+          frame_id = injured->frame_id
+          file = injured->file
+          injured_state = file->frames[frame_id].state
+
+          # mov eax,dword ptr ds:[esi+edi*4+194]
+          # mov edx,dword ptr ds:[eax+70]
+          # mov eax,dword ptr ds:[eax+368]
+          # imul edx,edx,178
+          # cmp dword ptr ds:[edx+eax+7AC],0BBE
+          # jnz short 0042F778
+          injured = global->objects[injured_id]
+          frame_id = injured->frame_id
+          file = injured->file
+          injured_state = file->frames[frame_id].state
+
+          # mov eax,dword ptr ds:[esi+ebx*4+194]
+          # mov edx,dword ptr ds:[eax+70]
+          # mov eax,dword ptr ds:[eax+368]
+          # imul edx,edx,178
+          # cmp dword ptr ds:[edx+eax+7AC],ecx
+          # jnz 0042FB60
+          attacker = global->objects[attacker_id]
+          frame_id = attacker->frame_id
+          file = attacker->file
+          attacker_state = file->frames[frame_id].state
+
+          # if frame is changable
+          if (injured_state != henry_wind_state and
+              (injured_state != john_biscuit_state or
+               attacker_state == henry_wind_state))
+            # 0042F778
+            # mov eax,dword ptr ds:[esi+ebx*4+194]
+            # cmp dword ptr ds:[eax+98],0
+            # jge short 0042F7D1
+            attacker = global->objects[attacker_id]
+            if attacker->weapon_type >= 0
+              # 0042F7D1
+              # mov edx,dword ptr ds:[eax+364]
+              # mov ecx,dword ptr ds:[esi+edi*4+194]
+              # mov dword ptr ds:[ecx+364],edx
+              # mov eax,dword ptr ds:[esi+ebx*4+194]
+              # mov ecx,dword ptr ds:[esi+edi*4+194]
+              # mov edx,dword ptr ds:[eax+354]
+              # mov dword ptr ds:[ecx+354],edx
+              injured = global->objects[injured_id]
+              injured->team = attacker->team
+              attacker = global->objects[attacker_id]
+              injured = global->objects[injured_id]
+              injured->owner = attacker->owner
+            else
+              # mov ecx,dword ptr ds:[eax+A0]
+              # mov edx,dword ptr ds:[esi+ecx*4+194]
+              # mov ecx,dword ptr ds:[edx+364]
+              # mov eax,dword ptr ds:[esi+edi*4+194]
+              # mov dword ptr ds:[eax+364],ecx
+              # mov edx,dword ptr ds:[esi+ebx*4+194]
+              # mov eax,dword ptr ds:[edx+A0]
+              # mov ecx,dword ptr ds:[esi+eax*4+194]
+              # mov edx,dword ptr ds:[esi+edi*4+194]
+              # mov eax,dword ptr ds:[ecx+354]
+              # mov dword ptr ds:[edx+354],eax
+              # jmp short 0042F7FE
+              holder_id = attacker->holder_id
+              holder = global->objects[holder_id]
+              injured = global->objects[injured_id]
+              injured->team = holder->team
+              attacker = global->objects[attacker_id]
+              holder_id = attacker->holder_id
+              holder = global->objects[holder_id]
+              injured = global->objects[injured_id]
+              injured->owner = holder->owner
+            end
+            # 0042F7FE
+            # mov eax,dword ptr ds:[esi+edi*4+194]
+            # mov byte ptr ds:[eax+EB],1
+            # mov ecx,dword ptr ds:[esi+edi*4+194]
+            # mov dword ptr ds:[ecx+88],0
+            # mov edx,dword ptr ds:[esi+edi*4+194]
+            # fst qword ptr ds:[edx+30]
+            # mov eax,dword ptr ds:[esi+edi*4+194]
+            # fst qword ptr ds:[eax+28]
+            # mov ecx,dword ptr ds:[esi+edi*4+194]
+            # fst qword ptr ds:[ecx+38]
+            # mov ecx,dword ptr ds:[esi+ebx*4+194]
+            # mov edx,dword ptr ds:[ecx+368]
+            # cmp dword ptr ds:[edx+6F4],0D1
+            # jnz 0042F90B
+            injured = global->objects[injured_id]
+            injured->_unknownEB = 1
+            injured = global->objects[injured_id]
+            injured->wait_counter = 0
+            injured = global->objects[injured_id]
+            injured = global->objects[injured_id]
+            injured = global->objects[injured_id]
+            injured->y_accl
+            injured->pic_x_gain
+            injured->z_accl
+            attacker = global->objects[attacker_id]
+
+            # mov eax,dword ptr ds:[esi+edi*4+194]
+            # mov eax,dword ptr ds:[eax+368]
+            # mov eax,dword ptr ds:[eax+6F4]
+            # cmp eax,0C8
+            # je short 0042F89C
+            # cmp eax,0CB
+            # je short 0042F89C
+            # cmp eax,0CD
+            # je short 0042F89C
+            # cmp eax,0CE
+            # je short 0042F89C
+            # cmp eax,0CF
+            # je short 0042F89C
+            # cmp eax,0D7
+            # je short 0042F89C
+            # cmp eax,0D8
+            # jnz short 0042F90B
+            injured = global->objects[injured_id]
+            file = injured->file
+            injured_file_id = file->id
+
+            # if attacker is freeze ball
+            if (attacker->file->id == freeze_ball_dat and
+                (injured_file_id == john_ball_dat or
+                 injured_file_id == deep_ball_dat or
+                 injured_file_id == dennis_ball_dat or
+                 injured_file_id == woody_ball_dat or
+                 injured_file_id == davis_ball_dat or
+                 injured_file_id == dennis_chase_dat or
+                 injured_file_id == jack_ball_dat))
+              # 0042F89C
+              # mov eax,dword ptr ds:[ecx+364]
+              # mov edx,dword ptr ds:[esi+edi*4+194]
+              # mov dword ptr ds:[edx+364],eax
+              # mov ecx,dword ptr ds:[esi+ebx*4+194]
+              # mov eax,dword ptr ds:[ecx+354]
+              # mov edx,dword ptr ds:[esi+edi*4+194]
+              # mov dword ptr ds:[edx+354],eax
+              # mov ecx,dword ptr ds:[esi+ebx*4+194]
+              # mov eax,dword ptr ds:[ecx+368]
+              # mov edx,dword ptr ds:[esi+edi*4+194]
+              # mov dword ptr ds:[edx+368],eax
+              # mov ecx,dword ptr ds:[esi+edi*4+194]
+              # mov eax,28
+              # mov dword ptr ds:[ecx+70],eax
+              # mov edx,dword ptr ds:[esi+edi*4+194]
+              # mov dword ptr ds:[edx+74],eax
+              # mov ecx,dword ptr ds:[esi+edi*4+194]
+              # mov dword ptr ds:[ecx+78],eax
+              # jmp 0042FA1E
+              injured = global->objects[injured_id]
+              injured->team = attacker->team
+              attacker = global->objects[attacker_id]
+              injured = global->objects[injured_id]
+              injured->owner = attacker->owner
+              attacker = global->objects[attacker_id]
+              injured = global->objects[injured_id]
+              injured = global->objects[injured_id]
+              injured = global->objects[injured_id]
+              injured = global->objects[injured_id]
+              injured->file = attacker->file
+              injured->frame_id = rebounding_frame
+              injured->frame_id = rebounding_frame
+              injured->frame_id = rebounding_frame
+
+              # 0042F90B
+              # cmp dword ptr ds:[edx+6F8],0
+              # je short 0042F921
+              # cmp dword ptr ds:[ecx+98],0
+              # jge 0042FA10
+
+              # 0042F921
+              # mov edx,dword ptr ss:[esp+C]
+              # mov eax,dword ptr ds:[edx+2C]
+              # cmp eax,2
+              # je 0042FA10
+              itr = @itr
+              effect = itr->effect
+
+              # cmp eax,14
+              # je 0042FA10
+            elsif ((attacker->file->type == character_type or
+                    attacker->weapon_type >= 0
+                   ) and
+                   (effect == fire_type_effect or
+                    effect == burn_effect))
+              # 0042FA10
+              # mov eax,dword ptr ds:[esi+edi*4+194]
+              # mov dword ptr ds:[eax+70],14
+              injured = global->objects[injured_id]
+              injured->frame_id = hit_frame
+            else
+              # mov eax,dword ptr ds:[esi+edi*4+194]
+              # mov dword ptr ds:[eax+70],1E
+              # mov ecx,dword ptr ds:[esi+ebx*4+194]
+              # mov edx,dword ptr ds:[ecx+368]
+              # cmp dword ptr ds:[edx+6F4],8
+              # jnz 0042FA1E
+              # mov eax,dword ptr ds:[esi+edi*4+194]
+              # mov ecx,dword ptr ds:[eax+368]
+              # mov eax,dword ptr ds:[ecx+6F4]
+              # cmp eax,0C8
+              # je short 0042F9A6
+              # cmp eax,0CB
+              # je short 0042F9A6
+              # cmp eax,0CD
+              # je short 0042F9A6
+              # cmp eax,0CE
+              # je short 0042F9A6
+              # cmp eax,0CF
+              # je short 0042F9A6
+              # cmp eax,0D7
+              # je short 0042F9A6
+              # cmp eax,0D8
+              # jnz short 0042FA1E
+              injured = global->objects[injured_id]
+              injured->frame_id = rebounding_frame
+              attacker = global->objects[attacker_id]
+              attacker_file_id = attacker->file->id
+              injured = global->objects[injured_id]
+              file = injured->file
+              injured_file_id = file->id
+
+              # 0042F9A6
+              # mov edx,dword ptr ds:[esi+7D4]
+              # mov ecx,dword ptr ds:[edx+4D82380]
+              # xor eax,eax
+              # test ecx,ecx
+              # jle short 0042FA1E
+              # mov dword ptr ss:[esp+18],edx
+              _unknown_objects_size = _4D82380[@files]
+              @files = global->files
+
+              # if attacker is freeze 
+              if (attacker_file_id == freeze_dat and
+                  (injured_file_id == john_ball_dat or
+                   injured_file_id == deep_ball_dat or
+                   injured_file_id == dennis_ball_dat or
+                   injured_file_id == woody_ball_dat or
+                   injured_file_id == davis_ball_dat or
+                   injured_file_id == dennis_chase_dat or
+                   injured_file_id == jack_ball_dat
+                  ) and
+                  _unknown_objects_size > 0
+                # 0042F9BC
+                # mov edx,dword ptr ds:[edx]
+                # cmp dword ptr ds:[edx+6F4],0D1
+                # je short 0042F9DE
+
+                # the condition of the loop below
+                # mov edx,dword ptr ss:[esp+18]
+                # add eax,1
+                # add edx,4
+                # cmp eax,ecx
+                # mov dword ptr ss:[esp+18],edx
+                # jl short 0042F9BC
+                # jmp short 0042FA1E
+                for (object_id = 0;
+                     object_id < _unknown_objects_size;
+                     object_id++, @files++)
+                  if (* @files)->id == freeze_ball_dat
+                    # 0042F9DE
+                    # mov ecx,dword ptr ds:[esi+7D4]
+                    # mov eax,dword ptr ds:[ecx+eax*4]
+                    # mov edx,dword ptr ds:[esi+edi*4+194]
+                    # mov dword ptr ds:[edx+368],eax
+                    # mov eax,dword ptr ds:[esi+edi*4+194]
+                    # mov ecx,dword ptr ds:[eax+70]
+                    # mov dword ptr ds:[eax+74],ecx
+                    # mov eax,dword ptr ds:[esi+edi*4+194]
+                    # mov edx,dword ptr ds:[eax+70]
+                    # mov dword ptr ds:[eax+78],edx
+                    # jmp short 0042FA1E
+                    injured = global->objects[injured_id]
+                    injured = global->objects[injured_id]
+                    injured = global->objects[injured_id]
+                    injured->file = global->files[object_id]
+                    injured->frame_id2 = injured->frame_id1
+                    injured->frame_id3 = injured->frame_id1
+                    break
+                  end
+                end
+              end # end if attacker is freeze 
+            end # end if attacker is freeze ball
+            # 0042FA1E
+            # mov eax,dword ptr ds:[esi+ebx*4+194]
+            # cmp dword ptr ds:[eax+98],0
+            # mov ecx,dword ptr ds:[esi+edi*4+194]
+            # jge 0042FB5E
+            attacker = global->objects[attacker_id]
+            injured = global->objects[injured_id]
+
+            # if attacker is holding weapon
+            if attacker->weapon_type >= 0
+              # 0042FB5E
+              # mov dword ptr ds:[ecx],ebx
+              injured->move_counter = attacker_id
+            else
+              # mov edx,dword ptr ds:[eax+A0]
+              # mov dword ptr ds:[ecx],edx
+              # mov eax,dword ptr ds:[esi+ebx*4+194]
+              # mov ecx,dword ptr ds:[eax+368]
+              # cmp dword ptr ds:[ecx+6F4],0D5
+              # jnz 0042FB60
+              injured->move_counter = attacker->holder_id
+              attacker = global->objects[attacker_id]
+
+              # mov edx,dword ptr ds:[esi+edi*4+194]
+              # mov eax,dword ptr ds:[edx+368]
+              # mov eax,dword ptr ds:[eax+6F4]
+              # cmp eax,0C8
+              # je short 0042FAA6
+              # cmp eax,0CB
+              # je short 0042FAA6
+              # cmp eax,0CD
+              # je short 0042FAA6
+              # cmp eax,0CE
+              # je short 0042FAA6
+              # cmp eax,0CF
+              # je short 0042FAA6
+              # cmp eax,0D7
+              # je short 0042FAA6
+              # cmp eax,0D8
+              # jnz 0042FB60
+              injured = global->objects[injured_id]
+              file = injured->file
+              injured_file_id = file->id
+
+              # if attacker is ice sword
+              if (attacker->file->id == ice_sword_dat and
+                  (injured_file_id == john_ball_dat or
+                   injured_file_id == deep_ball_dat or
+                   injured_file_id == dennis_ball_dat or
+                   injured_file_id == woody_ball_dat or
+                   injured_file_id == davis_ball_dat or
+                   injured_file_id == dennis_chase_dat or
+                   injured_file_id == jack_ball_dat))
+                # 0042FAA6
+                # mov edx,dword ptr ds:[esi+7D4]
+                # mov ecx,dword ptr ds:[edx+4D82380]
+                # xor eax,eax
+                # test ecx,ecx
+                # jle short 0042FB0E
+                # mov dword ptr ss:[esp+18],edx
+                @files = global->files
+                _unknown_objects_size = _4D82380[@files]
+
+                # the condition of the loop below
+                # add eax,1
+                # add edx,4
+                # cmp eax,ecx
+                # mov dword ptr ss:[esp+18],edx
+                # jl short 0042FABC
+                if _unknown_objects_size > 0
+                  # 0042FABC
+                  # mov edx,dword ptr ds:[edx]
+                  # cmp dword ptr ds:[edx+6F4],0D1
+                  # je short 0042FADE
+                  for (object_id = 0;
+                       object_id < _unknown_objects_size;
+                       object_id++, @files++)
+                    if (* @files)->id == freeze_ball_dat
+                      # 0042FADE
+                      # mov ecx,dword ptr ds:[esi+7D4]
+                      # mov eax,dword ptr ds:[ecx+eax*4]
+                      # mov edx,dword ptr ds:[esi+edi*4+194]
+                      # mov dword ptr ds:[edx+368],eax
+                      # mov eax,dword ptr ds:[esi+edi*4+194]
+                      # mov ecx,dword ptr ds:[eax+70]
+                      # mov dword ptr ds:[eax+74],ecx
+                      # mov eax,dword ptr ds:[esi+edi*4+194]
+                      # mov edx,dword ptr ds:[eax+70]
+                      # mov dword ptr ds:[eax+78],edx
+                      injured = global->objects[injured_id]
+                      injured = global->objects[injured_id]
+                      injured = global->objects[injured_id]
+                      injured->file = global->files[object_id]
+                      injured->frame_id2 = injured->frame_id1
+                      injured->frame_id3 = injured->frame_id1
+                      break
+                    end
+                  end
+                  # mov edx,dword ptr ss:[esp+18]
+                  # jmp short 0042FB0E
+                end
+                # 0042FB0E
+                # mov eax,dword ptr ds:[esi+ebx*4+194]
+                # mov ecx,dword ptr ds:[eax+A0]
+                # mov edx,dword ptr ds:[esi+ecx*4+194]
+                # mov ecx,dword ptr ds:[edx+364]
+                # mov eax,dword ptr ds:[esi+edi*4+194]
+                # mov dword ptr ds:[eax+364],ecx
+                # mov edx,dword ptr ds:[esi+ebx*4+194]
+                # mov eax,dword ptr ds:[edx+A0]
+                # mov ecx,dword ptr ds:[esi+eax*4+194]
+                # mov edx,dword ptr ds:[esi+edi*4+194]
+                # mov eax,dword ptr ds:[ecx+354]
+                # mov dword ptr ds:[edx+354],eax
+                # jmp short 0042FB60
+                attacker = global->objects[attacker_id]
+                holder_id = attacker->holder_id
+                holder = global->objects[holder_id]
+                injured = global->objects[injured_id]
+                injured->team = holder->team
+                attacker = global->objects[attacker_id]
+                holder_id = attacker->holder_id
+                holder = global->objects[holder_id]
+                injured = global->objects[injured_id]
+                injured->owner = holder->owner
+              end # end if attacker is ice sword
+            end # end if attacker is holding weapon
+            # 0042FB60
+          end # end if frame is changable
+          # 0042FB60
+        end # end if injured is attack
+        # 0042FCAA
       else
         # 0042FDF2
-      end
+      end # end injured can be attacked when these conditions hold:
     else
       # 0043056E
-    end
-  end
+    end # end normal attack
+  end # end attack loop
 end

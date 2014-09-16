@@ -1,4 +1,5 @@
 struct object
+  int    move_counter          # 0x0
   int    invincible_time       # 0x8
   int    x                     # 0x10
   int    y                     # 0x14
@@ -6,6 +7,7 @@ struct object
   int    attacks               # 0x20
   double pic_x_gain            # 0x28
   double y_accl                # 0x30
+  double z_accl                # 0x38
   double x_velocity            # 0x40
   double y_velocity            # 0x48
   double z_velocity            # 0x50

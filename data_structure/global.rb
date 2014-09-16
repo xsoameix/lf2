@@ -1,6 +1,6 @@
 struct global
-  int    game_state
-  bool   is_object_exists[400]
+  int    game_state            # 0x0
+  bool   is_object_exists[400] # 0x4
 
   # objects
   # format: [name][size]
@@ -10,7 +10,7 @@ struct global
   #   ?[2]
   #   characters_or_drinks[30]
   #   weapons_or_attacks_or_criminals[350]
-  object *objects[400]
+  object * objects[400]        # 0x194
 
   # file[ 0]: data\template.dat
   # file[ 1]: data\julian.dat
@@ -77,4 +77,4 @@ struct global
   # file[62]: data\julian_ball2.dat
   # file[63]: data\etc.dat
   # file[64]: data\broken_weapon.dat
-  file   *(*files)[65]
+  file   * (* files)[65]       # 0x7D4

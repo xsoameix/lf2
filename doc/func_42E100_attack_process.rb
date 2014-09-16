@@ -11,6 +11,8 @@ def func_42E100_attack_process(global, attacker_id)
   $fpu_st0 = 0
 
   # 00431A9B
+
+  # attack loop
   for (; @attack_id < attacker->succuessful_attacks; @attack_id++)
     # 0042E146
     attacker = global->objects[attacker_id]
@@ -1138,11 +1140,212 @@ def func_42E100_attack_process(global, attacker_id)
           attacker->hp = 0
         end
         # 0042F6F5
+        injured = global->objects[injured_id]
+
+        # if injured is attack
+        if injured->file->type == attack_type
+          frame_id = injured->frame_id
+          file = injured->file
+          injured_state = file->frames[frame_id].state
+          injured = global->objects[injured_id]
+          frame_id = injured->frame_id
+          file = injured->file
+          injured_state = file->frames[frame_id].state
+          attacker = global->objects[attacker_id]
+          frame_id = attacker->frame_id
+          file = attacker->file
+          attacker_state = file->frames[frame_id].state
+
+          # if frame is changable
+          if (injured_state != henry_wind_state and
+              (injured_state != john_biscuit_state or
+               attacker_state == henry_wind_state))
+            # 0042F778
+            attacker = global->objects[attacker_id]
+            if attacker->weapon_type >= 0
+              # 0042F7D1
+              injured = global->objects[injured_id]
+              injured->team = attacker->team
+              attacker = global->objects[attacker_id]
+              injured = global->objects[injured_id]
+              injured->owner = attacker->owner
+            else
+              holder_id = attacker->holder_id
+              holder = global->objects[holder_id]
+              injured = global->objects[injured_id]
+              injured->team = holder->team
+              attacker = global->objects[attacker_id]
+              holder_id = attacker->holder_id
+              holder = global->objects[holder_id]
+              injured = global->objects[injured_id]
+              injured->owner = holder->owner
+            end
+            # 0042F7FE
+            injured = global->objects[injured_id]
+            injured->_unknownEB = 1
+            injured = global->objects[injured_id]
+            injured->wait_counter = 0
+            injured = global->objects[injured_id]
+            injured = global->objects[injured_id]
+            injured = global->objects[injured_id]
+            injured->y_accl
+            injured->pic_x_gain
+            injured->z_accl
+            attacker = global->objects[attacker_id]
+            injured = global->objects[injured_id]
+            file = injured->file
+            injured_file_id = file->id
+
+            # if attacker is freeze ball
+            if (attacker->file->id == freeze_ball_dat and
+                (injured_file_id == john_ball_dat or
+                 injured_file_id == deep_ball_dat or
+                 injured_file_id == dennis_ball_dat or
+                 injured_file_id == woody_ball_dat or
+                 injured_file_id == davis_ball_dat or
+                 injured_file_id == dennis_chase_dat or
+                 injured_file_id == jack_ball_dat))
+              # 0042F89C
+              injured = global->objects[injured_id]
+              injured->team = attacker->team
+              attacker = global->objects[attacker_id]
+              injured = global->objects[injured_id]
+              injured->owner = attacker->owner
+              attacker = global->objects[attacker_id]
+              injured = global->objects[injured_id]
+              injured = global->objects[injured_id]
+              injured = global->objects[injured_id]
+              injured = global->objects[injured_id]
+              injured->file = attacker->file
+              injured->frame_id = rebounding_frame
+              injured->frame_id = rebounding_frame
+              injured->frame_id = rebounding_frame
+
+              # 0042F90B
+
+              # 0042F921
+              itr = @itr
+              effect = itr->effect
+            elsif ((attacker->file->type == character_type or
+                    attacker->weapon_type >= 0
+                   ) and
+                   (effect == fire_type_effect or
+                    effect == burn_effect))
+              # 0042FA10
+              injured = global->objects[injured_id]
+              injured->frame_id = hit_frame
+            else
+              injured = global->objects[injured_id]
+              injured->frame_id = rebounding_frame
+              attacker = global->objects[attacker_id]
+              attacker_file_id = attacker->file->id
+              injured = global->objects[injured_id]
+              file = injured->file
+              injured_file_id = file->id
+
+              # 0042F9A6
+              _unknown_objects_size = _4D82380[@files]
+              @files = global->files
+
+              # if attacker is freeze 
+              if (attacker_file_id == freeze_dat and
+                  (injured_file_id == john_ball_dat or
+                   injured_file_id == deep_ball_dat or
+                   injured_file_id == dennis_ball_dat or
+                   injured_file_id == woody_ball_dat or
+                   injured_file_id == davis_ball_dat or
+                   injured_file_id == dennis_chase_dat or
+                   injured_file_id == jack_ball_dat
+                  ) and
+                  _unknown_objects_size > 0
+                # 0042F9BC
+
+                # the condition of the loop below
+                for (object_id = 0;
+                     object_id < _unknown_objects_size;
+                     object_id++, @files++)
+                  if (* @files)->id == freeze_ball_dat
+                    # 0042F9DE
+                    injured = global->objects[injured_id]
+                    injured = global->objects[injured_id]
+                    injured = global->objects[injured_id]
+                    injured->file = global->files[object_id]
+                    injured->frame_id2 = injured->frame_id1
+                    injured->frame_id3 = injured->frame_id1
+                    break
+                  end
+                end
+              end # end if attacker is freeze 
+            end # end if attacker is freeze ball
+            # 0042FA1E
+            attacker = global->objects[attacker_id]
+            injured = global->objects[injured_id]
+
+            # if attacker is holding weapon
+            if attacker->weapon_type >= 0
+              # 0042FB5E
+              injured->move_counter = attacker_id
+            else
+              injured->move_counter = attacker->holder_id
+              attacker = global->objects[attacker_id]
+              injured = global->objects[injured_id]
+              file = injured->file
+              injured_file_id = file->id
+
+              # if attacker is ice sword
+              if (attacker->file->id == ice_sword_dat and
+                  (injured_file_id == john_ball_dat or
+                   injured_file_id == deep_ball_dat or
+                   injured_file_id == dennis_ball_dat or
+                   injured_file_id == woody_ball_dat or
+                   injured_file_id == davis_ball_dat or
+                   injured_file_id == dennis_chase_dat or
+                   injured_file_id == jack_ball_dat))
+                # 0042FAA6
+                @files = global->files
+                _unknown_objects_size = _4D82380[@files]
+
+                # the condition of the loop below
+                if _unknown_objects_size > 0
+                  # 0042FABC
+                  for (object_id = 0;
+                       object_id < _unknown_objects_size;
+                       object_id++, @files++)
+                    if (* @files)->id == freeze_ball_dat
+                      # 0042FADE
+                      injured = global->objects[injured_id]
+                      injured = global->objects[injured_id]
+                      injured = global->objects[injured_id]
+                      injured->file = global->files[object_id]
+                      injured->frame_id2 = injured->frame_id1
+                      injured->frame_id3 = injured->frame_id1
+                      break
+                    end
+                  end
+                end
+                # 0042FB0E
+                attacker = global->objects[attacker_id]
+                holder_id = attacker->holder_id
+                holder = global->objects[holder_id]
+                injured = global->objects[injured_id]
+                injured->team = holder->team
+                attacker = global->objects[attacker_id]
+                holder_id = attacker->holder_id
+                holder = global->objects[holder_id]
+                injured = global->objects[injured_id]
+                injured->owner = holder->owner
+              end # end if attacker is ice sword
+            end # end if attacker is holding weapon
+            # 0042FB60
+          end # end if frame is changable
+          # 0042FB60
+        end # end if injured is attack
+        # 0042FCAA
       else
         # 0042FDF2
-      end
+      end # end injured can be attacked when these conditions hold:
     else
       # 0043056E
-    end
-  end
+    end # end normal attack
+  end # end attack loop
 end
