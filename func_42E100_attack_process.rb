@@ -816,54 +816,50 @@ def func_42E100_attack_process(global, attacker_id)
           state == ice_state or
           state == lying_state or
           state == injured_state_2 or
-          state == fire_state or
-          (
-            !(
-              # knight can defend attack when these conditions hold:
-              injured_file_id == knight_dat and
-              injured->bdefend <= 15 and
-              effect_type != fire_type_effect and
-              effect_type != freeze_type_effect and
-              effect != fire_effect and
-              effect != freeze_effect and
-              attacker_file_id != john_biscuit_dat and
-              attacker_file_id != henry_arrow2_dat
-            ) and
-            !(
-              # louis can defend attack when these conditions hold:
-              injured_file_id == louis_dat and
-              injured->bdefend < 1 and
-              effect_type != fire_type_effect and
-              effect_type != freeze_type_effect and
-              effect != fire_effect and
-              effect != freeze_effect and
-              attacker_file_id != john_biscuit_dat and
-              attacker_file_id != henry_arrow2_dat and
-              (injured->frame_id < 20 or
-               file->frames[frame_id].state == dash_state or
-               file->frames[frame_id].state == jump_state or
-               file->frames[frame_id].state == defend_state)
-            ) and
-            !(
-              # julian can defend attack when these conditions hold:
-              @injured_file_id == julian_dat and
-              injured->bdefend <= 15 and
-              attacker_file_id != john_biscuit_dat and
-              attacker_file_id != henry_arrow2_dat
-            ) and
-            !(
-              # injured can defend attack when these conditions hold:
-              injured_frame->state == defend_state and
-              bdefend <= 60 and
-              (
-                attacker_facing != injured->facing or
-                itr->dvx < 0 or
-                attacker_file_id == boomerang_dat or
-                attacker_file_id == jan_chase_dat or
-                attacker_file_id == firzen_chasef_dat or
-                attacker_file_id == firzen_chasei_dat
-              ) and
-              injured->hp > 0)))
+          state == fire_state or !((
+            # knight can defend attack when these conditions hold:
+            injured_file_id == knight_dat and
+            injured->bdefend <= 15 and
+            effect_type != fire_type_effect and
+            effect_type != freeze_type_effect and
+            effect != fire_effect and
+            effect != freeze_effect and
+            attacker_file_id != john_biscuit_dat and
+            attacker_file_id != henry_arrow2_dat
+          ) or (
+            # louis can defend attack when these conditions hold:
+            injured_file_id == louis_dat and
+            injured->bdefend < 1 and
+            effect_type != fire_type_effect and
+            effect_type != freeze_type_effect and
+            effect != fire_effect and
+            effect != freeze_effect and
+            attacker_file_id != john_biscuit_dat and
+            attacker_file_id != henry_arrow2_dat and
+            (injured->frame_id < 20 or
+             file->frames[frame_id].state == dash_state or
+             file->frames[frame_id].state == jump_state or
+             file->frames[frame_id].state == defend_state)
+          ) or (
+            # julian can defend attack when these conditions hold:
+            @injured_file_id == julian_dat and
+            injured->bdefend <= 15 and
+            attacker_file_id != john_biscuit_dat and
+            attacker_file_id != henry_arrow2_dat
+          ))
+         ) and !(
+           # injured can defend attack when these conditions hold:
+           injured_frame->state == defend_state and
+           bdefend <= 60 and
+           (
+             attacker_facing != injured->facing or
+             itr->dvx < 0 or
+             attacker_file_id == boomerang_dat or
+             attacker_file_id == jan_chase_dat or
+             attacker_file_id == firzen_chasef_dat or
+             attacker_file_id == firzen_chasei_dat
+           ) and
+           injured->hp > 0)
         # 0042E87D
         # mov eax,dword ptr ds:[esi+edi*4+194]
         # mov dword ptr ds:[eax+B8],2D
@@ -3167,12 +3163,111 @@ def func_42E100_attack_process(global, attacker_id)
           func_417090 injured->x, 14
         end
         # 0042FD1D
+        # mov ecx,dword ptr ss:[esp+C]
+        # mov eax,dword ptr ds:[ecx+2C]
+        # cmp eax,2
+        # je short 0042FD5C
+        itr = @itr
+        effect = itr->effect
+
+        # cmp eax,15
+        # je short 0042FD5C
+        # cmp eax,16
+        # je short 0042FD5C
+        # cmp eax,14
+        # jnz 0042FDC6
+
+        # mov eax,dword ptr ds:[esi+edi*4+194]
+        # mov edx,dword ptr ds:[eax+78]
+        # mov eax,dword ptr ds:[eax+368]
+        # imul edx,edx,178
+        # cmp dword ptr ds:[edx+eax+7AC],12
+        # je short 0042FDC6
+        injured = global->objects[injured_id]
+        frame_id = injured->frame_id3
+        file = injured->file
+        injured_state = file->frames[frame_id]
+
+        # 0042FD5C
+        # mov ecx,dword ptr ds:[esi+edi*4+194]
+        # mov edx,dword ptr ds:[ecx+368]
+        injured = global->objects[injured_id]
+        file = injured->file
+        injured_type = file->type
+
+        # cmp dword ptr ds:[edx+6F8],0
+        # jnz short 0042FDC6
+        if (effect == fire_effect or
+            effect == flame_effect or
+            effect == firen_explosion_effect or
+            (effect == burn_effect and
+             injured_state != fire_state)) and
+             injured_type == character_type
+          # mov eax,ecx
+          # fstp st
+          # mov dword ptr ds:[eax+70],0CB
+          # mov ecx,dword ptr ds:[esi+edi*4+194]
+          # mov dword ptr ds:[ecx+88],0
+          # mov edx,dword ptr ds:[esi+edi*4+194]
+          # mov eax,dword ptr ds:[edx+10]
+          # push 10
+          # push eax
+          # call 00417090
+          # fldz
+          # mov ecx,dword ptr ds:[esi+edi*4+194]
+          # fcom qword ptr ds:[ecx+28]
+          # add esp,8
+          # fstsw ax
+          # test ah,41
+          # jpe short 0042FDBF
+          injured->frame_id = fire_frame_start
+          injured = global->objects[injured_id]
+          injured = global->objects[injured_id]
+          injured->wait_counter = 0
+          func_417090 injured->x, 16
+          injured = global->objects[injured_id]
+          if injured->pic_x_gain < 0
+            # 0042FDBF
+            # mov byte ptr ds:[ecx+80],0
+            injured->facing = facing_right
+          else
+            # mov byte ptr ds:[ecx+80],1
+            # jmp short 0042FDC6
+            injured->facing = facing_left
+          end
+        end
         # 0042FDC6
-      else
+        # mov ecx,dword ptr ss:[esp+C]
+        # cmp dword ptr ds:[ecx+2C],17
+        # jnz 0043187A
+        itr = @itr
+        if itr->effect == julian_explosion_effect
+          # mov edx,dword ptr ds:[esi+edi*4+194]
+          # fstp st
+          # mov eax,dword ptr ds:[edx+10]
+          # push 10
+          # push eax
+          # call 00417090
+          # fldz
+          # add esp,8
+          # jmp 0043187A
+          injured = global->objects[injured_id]
+          func_417090 injured->x, 16
+        end
+      else # injured can't be attacked
         # 0042FDF2
+        # mov ecx,dword ptr ss:[esp+C]
+        # mov edx,dword ptr ds:[ecx]
+        # test edx,edx
+        # jnz 0043056E
+        itr = @itr
+        kind = itr->kind
+        if kind == character_type
+        end
       end # end injured can be attacked when these conditions hold:
-    else
-      # 0043056E
     end # end normal attack
+    # 0043056E
+    # other types attack
+    # 0043187A
   end # end attack loop
 end

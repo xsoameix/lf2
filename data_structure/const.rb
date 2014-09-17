@@ -121,6 +121,7 @@ const int hit_frame               = 20
 const int rebounding_frame        = 40
 const int freeze_frame_start      = 200
 const int freeze_frame_end        = 202
+const int fire_frame_start        = 203
 const int slightly_injured_frame  = 220
 const int front_injured_frame     = 222
 const int back_injured_frame      = 224
