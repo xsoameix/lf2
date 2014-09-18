@@ -421,7 +421,7 @@ def func_42E100_attack_process(global, attacker_id)
               injury >= hp and
               @injured_type == character_type)
             attacker = global->objects[attacker_id]
-            owner_id = attacker->owner
+            owner_id = attacker->owner_id
             owner = global->objects[owner_id]
             owner->kills += 1
             injured = global->objects[injured_id]
@@ -448,7 +448,7 @@ def func_42E100_attack_process(global, attacker_id)
           if (file->type == character_type and
               injured->clone == not_clone)
             attacker = global->objects[attacker_id]
-            owner_id = attacker->owner
+            owner_id = attacker->owner_id
             owner = global->objects[owner_id]
             owner->total_attack += injury
           end
@@ -1166,7 +1166,7 @@ def func_42E100_attack_process(global, attacker_id)
               injured->team = attacker->team
               attacker = global->objects[attacker_id]
               injured = global->objects[injured_id]
-              injured->owner = attacker->owner
+              injured->owner_id = attacker->owner_id
             else
               holder_id = attacker->holder_id
               holder = global->objects[holder_id]
@@ -1176,7 +1176,7 @@ def func_42E100_attack_process(global, attacker_id)
               holder_id = attacker->holder_id
               holder = global->objects[holder_id]
               injured = global->objects[injured_id]
-              injured->owner = holder->owner
+              injured->owner_id = holder->owner_id
             end
             # 0042F7FE
             injured = global->objects[injured_id]
@@ -1208,7 +1208,7 @@ def func_42E100_attack_process(global, attacker_id)
               injured->team = attacker->team
               attacker = global->objects[attacker_id]
               injured = global->objects[injured_id]
-              injured->owner = attacker->owner
+              injured->owner_id = attacker->owner_id
               attacker = global->objects[attacker_id]
               injured = global->objects[injured_id]
               injured = global->objects[injured_id]
@@ -1331,7 +1331,7 @@ def func_42E100_attack_process(global, attacker_id)
                 holder_id = attacker->holder_id
                 holder = global->objects[holder_id]
                 injured = global->objects[injured_id]
-                injured->owner = holder->owner
+                injured->owner_id = holder->owner_id
               end # end if attacker is ice sword
             end # end if attacker is holding weapon
           end # end if injured frame is changable
@@ -1456,12 +1456,76 @@ def func_42E100_attack_process(global, attacker_id)
           injured = global->objects[injured_id]
           func_417090 injured->x, 16
         end
-      else # injured can't be attacked
+      elsif (
+        # injured can't be attacked
         # 0042FDF2
         itr = @itr
         kind = itr->kind
-        if kind == character_type
+        injured = global->objects[injured_id]
+        file = injured->file
+        injured_type = file->type
+        (kind == itr_normal_attack and
+         injured_type == character_type)
+      )
+        attacker = global->objects[attacker_id]
+        file = attacker->file
+        attacker_type = file->type
+        if attacker_type == attack_type
+          # 0042FE69
+          _unknownAC = file->_unknownAC
+          if _unknownAC > -1
+            func_416FB0 attacker->x, _unknownAC
+          end
+        else
+          injured_file_id = file->id
+          if (injured_file_id == knight_dat or
+              injured_file_id == louis_dat)
+            # 0042FE55
+            injured = global->objects[injured_id]
+            func_417090 injured->x, 17
+          else
+            injured = global->objects[injured_id]
+            func_417090 injured->x, 1
+          end
         end
+        # 0042FE80
+
+        # 0042FE85
+        injured = global->objects[injured_id]
+        file = injured->file
+        @injured_type = file->type
+        if @injured_type != drink_type
+          @armor = injured->armor_multiplier
+          itr = @itr
+          injury = itr->injury
+          if @armor > 0
+            injury = injury * 100 / @armor
+          end
+          # 0042FEC6
+          injured = global->objects[injured_id]
+          @hp = injured->hp
+          injured = global->objects[injured_id]
+          if (@hp > 0 and
+              injury / 10 >= @hp and
+              @injured_type == character_type and
+              injured->clone == not_clone)
+            injured = global->objects[injured_id]
+            owner_id = injured->owner_id;
+            owner = global->objects[owner_id]
+            owner->kills += 1
+            injured = global->objects[injured_id]
+            _unknown344 = injured->_unknown344
+            if (_unknown344 > 0 and
+                _unknown344 < 3)
+              injured = global->objects[injured_id]
+              _451B60[injured->_unknown344] += 1
+            end
+          end
+          # 0042FF52
+          injured = global->objects[injured_id]
+          injured->hp -= injury
+        # 0042FFD7
+        # 00430001
       end # end injured can be attacked when these conditions hold:
     end # end normal attack
     # 0043056E

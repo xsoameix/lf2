@@ -49,7 +49,7 @@ struct object
   int    _unknown344           # 0x344
   int    total_attack          # 0x348
   int    hp_lost               # 0x34C
-  int    owner                 # 0x354
+  int    owner_id              # 0x354
   int    kills                 # 0x358
   int    team                  # 0x364
   file   *file                 # 0x368
