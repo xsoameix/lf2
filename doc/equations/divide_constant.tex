@@ -1,0 +1,107 @@
+\documentclass[fleqn]{article}
+\usepackage{mathtools}
+\usepackage{setspace}
+\usepackage{amsmath}
+\setlength{\mathindent}{1cm}
+\usepackage{listings}
+\pagestyle{empty}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\begin{document}
+\setstretch{0.4}
+\lstset{
+    language={[x86masm]Assembler},
+    basicstyle=\small
+}
+
+\section{Algorithm}
+\begin{equation*}
+    \dfrac{x}{y} = x * \dfrac{1}{y} = x * \dfrac{1 * 2^{n}}{y * 2^{n}} = x * \dfrac{2^{n}}{y} * \dfrac{1}{2^{n}}
+\end{equation*}
+
+$let\ c = \dfrac{2^{n}}{y}$
+\begin{equation*}
+    \begin{split}
+        &\Rightarrow \dfrac{x}{y} = \dfrac{x * c}{2^{n}} \\
+        &\Rightarrow [\frac{x}{y}] =
+        \left\{
+            \begin{array}{l l}
+                \floor{\dfrac{x * c}{2^{n}}} & \quad \text{if $x \ge 0$} \\
+                \ceil{\dfrac{x * c}{2^{n}}} = \floor{\dfrac{x * c}{2^{n}}} + 1 & \quad \text{if $x < 0$}
+            \end{array}
+        \right.
+    \end{split}
+\end{equation*}
+
+\section{Example}
+\begin{lstlisting}
+    mov eax,66666667h
+\end{lstlisting}
+\begin{equation*}
+    eax = c
+\end{equation*}
+
+\begin{lstlisting}
+    imul ecx
+\end{lstlisting}
+\begin{equation*}
+    ecx = x
+\end{equation*}
+
+\begin{lstlisting}
+    sar edx,2
+\end{lstlisting}
+
+Because edx is higher part of result, $n \ge 32$.
+
+\begin{align*}
+    edx = \dfrac{x * c}{2^{n}} \\
+    n = 32 + 2
+\end{align*}
+
+\begin{lstlisting}
+    mov eax,edx
+    shr eax,1F
+\end{lstlisting}
+
+\begin{equation*}
+    eax = \left\{
+        \begin{array}{l l}
+            0 & \quad \text{if $x \ge 0$} \\
+            1 & \quad \text{if $x < 0$}
+        \end{array}
+    \right.
+\end{equation*}
+
+\begin{lstlisting}
+    add eax,edx
+\end{lstlisting}
+
+\begin{equation*}
+    [\dfrac{x}{y}] = \left\{
+        \begin{array}{l l}
+            \floor{x * \dfrac{c}{2^{n}}} + 0 & \quad \text{if $x \ge 0$} \\
+            \floor{x * \dfrac{c}{2^{n}}} + 1 & \quad \text{if $x < 0$}
+        \end{array}
+    \right.
+\end{equation*}
+\setstretch{1}
+
+\section{Solution}
+\setstretch{0.4}
+\begin{equation*}
+    c = \dfrac{2^{n}}{y} = \dfrac{2^{32 + 2}}{y} = 66666667h
+\end{equation*}
+
+\begin{equation*}
+    \Rightarrow y = \dfrac{2^{32 + 2}}{66666667h} = 9.9999... \approx 10
+\end{equation*}
+
+so the solution is:
+
+\begin{equation*}
+    \dfrac{x}{10}
+\end{equation*}
+
+\end{document}

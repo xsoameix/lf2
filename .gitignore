@@ -1,1 +1,5 @@
 *.swp
+
+doc/equations/*.aux
+doc/equations/*.dvi
+doc/equations/*.log
