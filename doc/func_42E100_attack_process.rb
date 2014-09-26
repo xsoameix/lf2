@@ -664,11 +664,11 @@ def func_42E100_attack_process(global, attacker_id)
         # 0042ED77
         injured = global->objects[injured_id]
         itr = @itr
-        if (injured->fall != 80 and
+        if (injured->fall == 80 and
             # 0042EE20
             injured->x_velocity < 5.0 and
             injured->x_velocity > -5.0 and
-            itr->dvx != 0)
+            itr->dvx == 0)
           attacker = global->objects[attacker_id]
           frame_id = attacker->frame_id
           file = attacker->file
@@ -681,7 +681,7 @@ def func_42E100_attack_process(global, attacker_id)
             # 0042EDF4
             facing = attacker->facing
             injured = global->objects[injured_id]
-            injured->pic_x_gain += (1 - facing * 2).to_f * 5.0
+            injured->pic_x_gain += (1 - facing * 2).to_f * -5.0
           end
         elsif (
           # 0042EE22
@@ -1523,9 +1523,172 @@ def func_42E100_attack_process(global, attacker_id)
           end
           # 0042FF52
           injured = global->objects[injured_id]
-          injured->hp -= injury
-        # 0042FFD7
+          injured->hp -= injury / 10
+          injured = global->objects[injured_id]
+          injured->dark_hp += injury / 60
+          injured = global->objects[injured_id]
+          injured->hp_lost += injury / 10
+          injured = global->objects[injured_id]
+          file = injured->file
+          injured_type = file->type
+          if (injured_type == character_type and
+              injured->clone == not_clone)
+            attacker = global->objects[attacker_id]
+            owner_id = attacker->owner_id
+            owner = global->objects[owner_id]
+            owner->total_attack += injury / 10
+          end
+          # 0042FFD7
+          injured = global->objects[injured_id]
+          _unknown344 = injured->_unknown344
+          if (_unknown344 > 0 and
+              _unknown344 < 3)
+            injured = global->objects[injured_id]
+            _unknown344 = injured->_unknown344
+            451B68[_unknown344] += injury / 10
+          end
+        end
         # 00430001
+        injured = global->objects[injured_id]
+        file = injured->file
+        injured_type = file->type
+        if (injured_type == lignt_weapon_type and
+            injured_type == heavy_weapon_type and
+            injured_type == throw_weapon_type and
+            injured_type == drink_type)
+          # 00430028
+          injured = global->objects[injured_id]
+          injured->drink_hp = @itr->injury
+          if @itr->bdefend == 100
+            injured = global->objects[injured_id]
+            injured->drink_hp = -1
+          end
+        end
+        # 00430055
+
+        # 00430059
+        injured = global->objects[injured_id]
+        if injured->hp <= 0
+          injured->fall = 80
+        end
+        # 00430073
+        injured = global->objects[injured_id]
+        injured = global->objects[injured_id]
+        injured = global->objects[injured_id]
+        injured = global->objects[injured_id]
+        attacker = global->objects[attacker_id]
+        injured = global->objects[injured_id]
+        injured = global->objects[injured_id]
+        injured->wait_counter = 0
+        injured->bdefend += @itr->bdefend
+        injured->attacks += 1
+        attacker->shaking = 3
+        injured->shaking = -5
+        if injured->y == 0
+          if (injured->bdefend > 30 and
+              @injured_frame->state == defend_state)
+            injured->frame_id1 = broken_defend_frame
+          elsif (
+            # 004300EE
+            injured->frame_id1 == defend_frame_start
+          )
+            injured->frame_id1 = defend_frame_end
+          end
+          # 004300FB
+          injured = global->objects[injured_id]
+          if (injured->fall == 80 and
+              injured->x_velocity < 3.0 and
+              injured->x_velocity > -3.0 and
+              @itr->dvx == 0)
+            attacker = global->objects[attacker_id]
+            frame_id = attacker->frame_id1
+            file = attacker->file
+            attacker_state = file->frames[frame_id]
+            attacker = global->objects[attacker_id]
+            if attacker_state == in_the_sky_state_2
+              injured = global->objects[injured_id]
+              if attacker->x < injured->x
+                injured->pic_x_gain += 6.0
+              else
+                # 0043018D
+                # fsub qword ptr ds:[447940]
+                injured->pic_x_gain -= 6.0
+              end
+            else
+              # 0043019B
+              injured = global->objects[injured_id]
+              facing = attacker->facing
+              injured->pic_x_gain += (1 - facing * 2) * -3.0
+            end
+          elsif (
+            # 004301C7
+
+            # 004301C9
+            attacker = global->objects[attacker_id]
+            frame_id = attacker->frame_id1
+            file = attacker->file
+            attacker_state = file->frames[frame_id]
+            attacker_state == in_the_sky_state_2
+          )
+            attacker = global->objects[attacker_id]
+            injured = global->objects[injured_id]
+            if attacker->x < injured->x
+              injured->pic_x_gain += @itr->dvx
+            else
+              # 0043037D
+              injured->pic_x_gain -= @itr->dvx
+            end
+          elsif (
+            effect = @itr->effect
+            (effect == firen_explosion_effect or
+             effect == julian_explosion_effect)
+          )
+            injured = global->objects[injured_id]
+            attacker = global->objects[attacker_id]
+            injured = global->objects[injured_id]
+            if injured->x > attacker->x
+              injured->pic_x_gain -= @itr->dvx
+            else
+              # 0043027B
+              injured->pic_x_gain += @itr->dvx
+            end
+          else
+            attacker = global->objects[attacker_id]
+            if attacker->facing == facing_right
+              injured = global->objects[injured_id]
+              injured->pic_x_gain += @itr->dvx / 2
+            end
+            # 0043024E
+            attacker = global->objects[attacker_id]
+            if attacker->facing == facing_left
+              injured = global->objects[injured_id]
+
+              # 0043027B
+              injured->pic_x_gain += - (@itr->dvx / 2)
+            end
+          end
+        else
+          # 004302AE
+          injured = global->objects[injured_id]
+          if (injured->fall == 80 and
+              injured->x_velocity < 6.0 and
+              injured->x_velocity > -6.0 and
+              @itr->dvx)
+            attacker = global->objects[attacker_id]
+            facing = attacker->facing
+
+            # 00430309
+
+            # 0043030C
+            injured->pic_x_gain += (1 - facing * 2) * -6.0
+          elsif (
+            # 0043033B
+
+            # 0043033D
+          )
+          end
+        end
+        # 0043030F
       end # end injured can be attacked when these conditions hold:
     end # end normal attack
     # 0043056E

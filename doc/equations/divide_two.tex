@@ -1,0 +1,55 @@
+\documentclass[fleqn]{article}
+\usepackage{mathtools}
+\usepackage{setspace}
+\usepackage{amsmath}
+\setlength{\mathindent}{1cm}
+\usepackage{listings}
+\pagestyle{empty}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\begin{document}
+\setstretch{0.4}
+\lstset{
+    language={[x86masm]Assembler},
+    basicstyle=\small
+}
+
+\section{Algorithm}
+\begin{equation*}
+    [\frac{x}{2}] = \left\{
+        \begin{array}{l l}
+            \floor{\dfrac{x}{2}} & \quad \text{if $x \ge 0$} \\
+            \ceil{\dfrac{x}{2}} = \floor{\dfrac{x + 1}{2}} & \quad \text{if $x < 0$}
+        \end{array}
+    \right.
+\end{equation*}
+
+\section{Example}
+\begin{lstlisting}
+    cdq
+\end{lstlisting}
+\begin{align*}
+    eax &= x \\
+    edx &= \left\{
+        \begin{array}{l l}
+            0 & \quad \text{if $x \ge 0$} \\
+            1 & \quad \text{if $x < 0$}
+        \end{array}
+    \right.
+\end{align*}
+
+\begin{lstlisting}
+    sub eax,edx
+    sar eax,1
+\end{lstlisting}
+\begin{equation*}
+    [\dfrac{x}{2}] = \left\{
+        \begin{array}{l l}
+            \floor{\dfrac{x - 0}{2}} & \quad \text{if $x \ge 0$} \\
+            \floor{\dfrac{x - (-1)}{2}} & \quad \text{if $x < 0$}
+        \end{array}
+    \right.
+\end{equation*}
+
+\end{document}

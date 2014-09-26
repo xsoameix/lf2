@@ -1520,12 +1520,12 @@ def func_42E100_attack_process(global, attacker_id)
         # cmp dword ptr ds:[ecx+14],0
         # jnz short 0042EE20
         itr = @itr
-        if (injured->fall != 80 and
+        if (injured->fall == 80 and
             # 0042EE20
             # fstp st
             injured->x_velocity < 5.0 and
             injured->x_velocity > -5.0 and
-            itr->dvx != 0)
+            itr->dvx == 0)
           # mov eax,dword ptr ds:[esi+ebx*4+194]
           # mov edx,dword ptr ds:[eax+70]
           # mov ecx,dword ptr ds:[eax+368]
@@ -1561,7 +1561,7 @@ def func_42E100_attack_process(global, attacker_id)
             # jmp 0042F0A9
             facing = attacker->facing
             injured = global->objects[injured_id]
-            injured->pic_x_gain += (1 - facing * 2).to_f * 5.0
+            injured->pic_x_gain += (1 - facing * 2).to_f * -5.0
           end
         elsif (
           # 0042EE22
@@ -3424,7 +3424,7 @@ def func_42E100_attack_process(global, attacker_id)
           # add ecx,edx
           # sub dword ptr ds:[eax+2FC],ecx
           injured = global->objects[injured_id]
-          injured->hp -= injury
+          injured->hp -= injury / 10
 
           # mov eax,55555555
           # imul ecx
@@ -3437,32 +3437,385 @@ def func_42E100_attack_process(global, attacker_id)
           # mov edx,eax
           # mov eax,dword ptr ds:[esi+edi*4+194]
           # add dword ptr ds:[eax+300],edx
+          injured = global->objects[injured_id]
+          injured->dark_hp += injury / 60
+
           # mov eax,dword ptr ds:[esi+edi*4+194]
           # add dword ptr ds:[eax+34C],ecx
+          injured = global->objects[injured_id]
+          injured->hp_lost += injury / 10
+
           # mov edx,dword ptr ds:[esi+edi*4+194]
           # mov eax,dword ptr ds:[edx+368]
           # cmp dword ptr ds:[eax+6F8],0
           # jnz short 0042FFD7
-        # cmp dword ptr ds:[edx+2F4],-1
-        # jnz short 0042FFD7
-        # mov eax,dword ptr ds:[esi+ebx*4+194]
-        # mov edx,dword ptr ds:[eax+354]
-        # mov eax,dword ptr ds:[esi+edx*4+194]
-        # add dword ptr ds:[eax+348],ecx
-        # 0042FFD7
-        # mov eax,dword ptr ds:[esi+edi*4+194]
-        # mov eax,dword ptr ds:[eax+344]
-        # test eax,eax
-        # jle short 00430001
-        # cmp eax,3
-        # jge short 00430001
-        # mov edx,dword ptr ds:[esi+edi*4+194]
-        # mov eax,dword ptr ds:[edx+344]
-        # add dword ptr ds:[eax*4+451B68],ecx
+          injured = global->objects[injured_id]
+          file = injured->file
+          injured_type = file->type
+
+          # cmp dword ptr ds:[edx+2F4],-1
+          # jnz short 0042FFD7
+          if (injured_type == character_type and
+              injured->clone == not_clone)
+            # mov eax,dword ptr ds:[esi+ebx*4+194]
+            # mov edx,dword ptr ds:[eax+354]
+            # mov eax,dword ptr ds:[esi+edx*4+194]
+            # add dword ptr ds:[eax+348],ecx
+            attacker = global->objects[attacker_id]
+            owner_id = attacker->owner_id
+            owner = global->objects[owner_id]
+            owner->total_attack += injury / 10
+          end
+          # 0042FFD7
+          # mov eax,dword ptr ds:[esi+edi*4+194]
+          # mov eax,dword ptr ds:[eax+344]
+          # test eax,eax
+          # jle short 00430001
+          # cmp eax,3
+          # jge short 00430001
+          injured = global->objects[injured_id]
+          _unknown344 = injured->_unknown344
+          if (_unknown344 > 0 and
+              _unknown344 < 3)
+            # mov edx,dword ptr ds:[esi+edi*4+194]
+            # mov eax,dword ptr ds:[edx+344]
+            # add dword ptr ds:[eax*4+451B68],ecx
+            injured = global->objects[injured_id]
+            _unknown344 = injured->_unknown344
+            451B68[_unknown344] += injury / 10
+          end
+        end
         # 00430001
         # mov eax,dword ptr ds:[esi+edi*4+194]
         # mov ecx,dword ptr ds:[eax+368]
         # mov eax,dword ptr ds:[ecx+6F8]
+        # cmp eax,1
+        # je short 00430028
+        # cmp eax,2
+        # je short 00430028
+        # cmp eax,4
+        # je short 00430028
+        # cmp eax,6
+        # jnz short 00430055
+        injured = global->objects[injured_id]
+        file = injured->file
+        injured_type = file->type
+        if (injured_type == lignt_weapon_type and
+            injured_type == heavy_weapon_type and
+            injured_type == throw_weapon_type and
+            injured_type == drink_type)
+          # 00430028
+          # mov ecx,dword ptr ss:[esp+C]
+          # mov eax,dword ptr ds:[esi+edi*4+194]
+          # mov edx,dword ptr ds:[ecx+44]
+          # sub dword ptr ds:[eax+31C],edx
+          # cmp dword ptr ds:[ecx+40],64
+          # jnz short 00430059
+          injured = global->objects[injured_id]
+          injured->drink_hp = @itr->injury
+          if @itr->bdefend == 100
+            # mov eax,dword ptr ds:[esi+edi*4+194]
+            # mov dword ptr ds:[eax+31C],-1
+            # jmp short 00430059
+            injured = global->objects[injured_id]
+            injured->drink_hp = -1
+          end
+        end
+        # 00430055
+        # mov ecx,dword ptr ss:[esp+C]
+
+        # 00430059
+        # mov eax,dword ptr ds:[esi+edi*4+194]
+        # cmp dword ptr ds:[eax+2FC],0
+        # jg short 00430073
+        injured = global->objects[injured_id]
+        if injured->hp <= 0
+          # mov dword ptr ds:[eax+B0],50
+          injured->fall = 80
+        end
+        # 00430073
+        # mov edx,dword ptr ds:[esi+edi*4+194]
+        # mov dword ptr ds:[edx+88],0
+        # mov eax,dword ptr ds:[esi+edi*4+194]
+        # mov edx,dword ptr ds:[ecx+40]
+        # add dword ptr ds:[eax+B8],edx
+        # mov eax,dword ptr ds:[esi+edi*4+194]
+        # add dword ptr ds:[eax+20],1
+        # mov eax,dword ptr ds:[esi+ebx*4+194]
+        # mov dword ptr ds:[eax+B4],3
+        # mov edx,dword ptr ds:[esi+edi*4+194]
+        # mov dword ptr ds:[edx+B4],-5
+        # mov eax,dword ptr ds:[esi+edi*4+194]
+        # cmp dword ptr ds:[eax+14],0
+        # jnz 004302AE
+        injured = global->objects[injured_id]
+        injured = global->objects[injured_id]
+        injured = global->objects[injured_id]
+        injured = global->objects[injured_id]
+        attacker = global->objects[attacker_id]
+        injured = global->objects[injured_id]
+        injured = global->objects[injured_id]
+        injured->wait_counter = 0
+        injured->bdefend += @itr->bdefend
+        injured->attacks += 1
+        attacker->shaking = 3
+        injured->shaking = -5
+        if injured->y == 0
+          # cmp dword ptr ds:[eax+B8],1E
+          # jle short 004300EE
+
+          # mov edx,dword ptr ss:[esp+18]
+          # cmp dword ptr ds:[edx+8],7
+          # jnz short 004300EE
+          if (injured->bdefend > 30 and
+              @injured_frame->state == defend_state)
+            # mov dword ptr ds:[eax+70],70
+            # jmp short 004300FB
+            injured->frame_id1 = broken_defend_frame
+          elsif (
+            # 004300EE
+            # cmp dword ptr ds:[eax+70],6E
+            # jnz short 004300FB
+            injured->frame_id1 == defend_frame_start
+          )
+            # mov dword ptr ds:[eax+70],6F
+            injured->frame_id1 = defend_frame_end
+          end
+          # 004300FB
+          # mov edx,dword ptr ds:[esi+edi*4+194]
+          # cmp dword ptr ds:[edx+B0],50
+          # jnz 004301C9
+          injured = global->objects[injured_id]
+
+          # fld qword ptr ds:[447A40]
+          # fcom qword ptr ds:[edx+40]
+          # fstsw ax
+          # test ah,41
+          # jnz 004301C7
+
+          # fld qword ptr ds:[449050]
+          # fcomp qword ptr ds:[edx+40]
+          # fstsw ax
+          # test ah,5
+          # jpe 004301C7
+
+          # cmp dword ptr ds:[ecx+14],0
+          # jnz 004301C7
+          if (injured->fall == 80 and
+              injured->x_velocity < 3.0 and
+              injured->x_velocity > -3.0 and
+              @itr->dvx == 0)
+            # mov eax,dword ptr ds:[esi+ebx*4+194]
+            # mov edx,dword ptr ds:[eax+70]
+            # mov eax,dword ptr ds:[eax+368]
+            # imul edx,edx,178
+            # cmp dword ptr ds:[edx+eax+7AC],7D0
+            # mov eax,dword ptr ds:[esi+ebx*4+194]
+            # jnz short 0043019B
+            attacker = global->objects[attacker_id]
+            frame_id = attacker->frame_id1
+            file = attacker->file
+            attacker_state = file->frames[frame_id]
+            attacker = global->objects[attacker_id]
+            if attacker_state == in_the_sky_state_2
+              # mov edx,dword ptr ds:[eax+10]
+              # fstp st
+              # mov eax,dword ptr ds:[esi+edi*4+194]
+              # cmp edx,dword ptr ds:[eax+10]
+              # fld qword ptr ds:[eax+28]
+              # jge short 0043018D
+              injured = global->objects[injured_id]
+              if attacker->x < injured->x
+                # fadd qword ptr ds:[447940]
+                # fstp qword ptr ds:[eax+28]
+                # jmp 0043030F
+                injured->pic_x_gain += 6.0
+              else
+                # 0043018D
+                # fsub qword ptr ds:[447940]
+                # fstp qword ptr ds:[eax+28]
+                # jmp 0043030F
+                injured->pic_x_gain -= 6.0
+              end
+            else
+              # 0043019B
+              # movsx eax,byte ptr ds:[eax+80]
+              # add eax,eax
+              # mov edx,1
+              # sub edx,eax
+              # mov eax,dword ptr ds:[esi+edi*4+194]
+              # mov dword ptr ss:[esp+18],edx
+              # fild dword ptr ss:[esp+18]
+              # fmulp st(1),st
+              # fadd qword ptr ds:[eax+28]
+              # fstp qword ptr ds:[eax+28]
+              # jmp 0043030F
+              injured = global->objects[injured_id]
+              facing = attacker->facing
+              injured->pic_x_gain += (1 - facing * 2) * -3.0
+            end
+          elsif (
+            # 004301C7
+            # fstp st
+
+            # 004301C9
+            # mov eax,dword ptr ds:[esi+ebx*4+194]
+            # mov edx,dword ptr ds:[eax+70]
+            # mov eax,dword ptr ds:[eax+368]
+            # imul edx,edx,178
+            # cmp dword ptr ds:[edx+eax+7AC],7D0
+            # jnz short 00430214
+            attacker = global->objects[attacker_id]
+            frame_id = attacker->frame_id1
+            file = attacker->file
+            attacker_state = file->frames[frame_id]
+            attacker_state == in_the_sky_state_2
+          )
+            # mov eax,dword ptr ds:[esi+ebx*4+194]
+            # fild dword ptr ds:[ecx+14]
+            # mov edx,dword ptr ds:[eax+10]
+            # mov eax,dword ptr ds:[esi+edi*4+194]
+            # cmp edx,dword ptr ds:[eax+10]
+            # jge 0043037D
+            attacker = global->objects[attacker_id]
+            injured = global->objects[injured_id]
+            if attacker->x < injured->x
+              # fadd qword ptr ds:[eax+28]
+              # fstp qword ptr ds:[eax+28]
+              # jmp 0043030F
+              injured->pic_x_gain += @itr->dvx
+            else
+              # 0043037D
+              # fsubr qword ptr ds:[eax+28]
+              # fstp qword ptr ds:[eax+28]
+              # jmp short 0043030F
+              injured->pic_x_gain -= @itr->dvx
+            end
+          elsif (
+            # mov eax,dword ptr ds:[ecx+2C]
+            # cmp eax,16
+            # je short 00430286
+            # cmp eax,17
+            # je short 00430286
+            effect = @itr->effect
+            (effect == firen_explosion_effect or
+             effect == julian_explosion_effect)
+          )
+            # mov eax,dword ptr ds:[esi+edi*4+194]
+            # fild dword ptr ds:[ecx+14]
+            # mov edx,dword ptr ds:[eax+10]
+            # mov eax,dword ptr ds:[esi+ebx*4+194]
+            # cmp edx,dword ptr ds:[eax+10]
+            # mov eax,dword ptr ds:[esi+edi*4+194]
+            # jle short 0043027B
+            injured = global->objects[injured_id]
+            attacker = global->objects[attacker_id]
+            injured = global->objects[injured_id]
+            if injured->x > attacker->x
+              # fsubr qword ptr ds:[eax+28]
+              # fstp qword ptr ds:[eax+28]
+              # jmp short 0043030F
+              injured->pic_x_gain -= @itr->dvx
+            else
+              # 0043027B
+              # fadd qword ptr ds:[eax+28]
+              # fstp qword ptr ds:[eax+28]
+              # jmp 0043030F
+              injured->pic_x_gain += @itr->dvx
+            end
+          else
+            # mov eax,dword ptr ds:[esi+ebx*4+194]
+            # cmp byte ptr ds:[eax+80],0
+            # jnz short 0043024E
+            attacker = global->objects[attacker_id]
+            if attacker->facing == facing_right
+              # mov eax,dword ptr ds:[ecx+14]
+              # cdq
+              # sub eax,edx
+              # sar eax,1
+              # mov dword ptr ss:[esp+18],eax
+              # mov eax,dword ptr ds:[esi+edi*4+194]
+              # fild dword ptr ss:[esp+18]
+              # fadd qword ptr ds:[eax+28]
+              # fstp qword ptr ds:[eax+28]
+              injured = global->objects[injured_id]
+              injured->pic_x_gain += @itr->dvx / 2
+            end
+            # 0043024E
+            # mov eax,dword ptr ds:[esi+ebx*4+194]
+            # cmp byte ptr ds:[eax+80],1
+            # jnz 0043030F
+            attacker = global->objects[attacker_id]
+            if attacker->facing == facing_left
+              # mov eax,dword ptr ds:[ecx+14]
+              # cdq
+              # sub eax,edx
+              # sar eax,1
+              # neg eax
+              # mov dword ptr ss:[esp+18],eax
+              # mov eax,dword ptr ds:[esi+edi*4+194]
+              # fild dword ptr ss:[esp+18]
+              injured = global->objects[injured_id]
+
+              # 0043027B
+              # fadd qword ptr ds:[eax+28]
+              # fstp qword ptr ds:[eax+28]
+              # jmp 0043030F
+              injured->pic_x_gain += - (@itr->dvx / 2)
+            end
+          end
+        else
+          # 004302AE
+          # mov edx,dword ptr ds:[esi+edi*4+194]
+          # cmp dword ptr ds:[edx+B0],50
+          # jnz short 0043033D
+          injured = global->objects[injured_id]
+
+          # fld qword ptr ds:[447940]
+          # fcom qword ptr ds:[edx+40]
+          # fstsw ax
+          # test ah,41
+          # jnz short 0043033B
+
+          # fld qword ptr ds:[449AF0]
+          # fcomp qword ptr ds:[edx+40]
+          # fstsw ax
+          # test ah,5
+          # jpe short 0043033B
+
+          # cmp dword ptr ds:[ecx+14],6
+          # jge short 0043033B
+          if (injured->fall == 80 and
+              injured->x_velocity < 6.0 and
+              injured->x_velocity > -6.0 and
+              @itr->dvx)
+            # mov eax,dword ptr ds:[esi+ebx*4+194]
+            # movsx ecx,byte ptr ds:[eax+80]
+            # add ecx,ecx
+            # mov eax,1
+            # sub eax,ecx
+            # mov ecx,dword ptr ss:[esp+C]
+            # mov dword ptr ss:[esp+18],eax
+            # fild dword ptr ss:[esp+18]
+            # fmulp st(1),st
+            attacker = global->objects[attacker_id]
+            facing = attacker->facing
+
+            # 00430309
+            # fadd qword ptr ds:[edx+28]
+
+            # 0043030C
+            # fstp qword ptr ds:[edx+28]
+            injured->pic_x_gain += (1 - facing * 2) * -6.0
+          elsif (
+            # 0043033B
+            # fstp st
+
+            # 0043033D
+          )
+          end
+        end
+        # 0043030F
       end # end injured can be attacked when these conditions hold:
     end # end normal attack
     # 0043056E

@@ -3,10 +3,14 @@ const struct global *global       = 0x458B00
 # the position of perspective relative to background
 const int *perspective            = 0x450BC4
 
+const double _447940              = 6.0
+const double _447A40              = 3.0
 const double _448308              = -5.0
 const double _448910              = -1.0
 const double _449048              = 5.0
+const double _449050              = -3.0
 const double _449AF8              = 0.55
+const double _449AF0              = -6.0
 
 const int template_dat            =   0
 const int julian_dat              =  52
@@ -119,6 +123,9 @@ const int john_biscuit_state      = 3006
 
 const int hit_frame               = 20
 const int rebounding_frame        = 40
+const int defend_frame_start      = 110
+const int defend_frame_end        = 111
+const int broken_defend_frame     = 112
 const int freeze_frame_start      = 200
 const int freeze_frame_end        = 202
 const int fire_frame_start        = 203

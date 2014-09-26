@@ -61,6 +61,10 @@ or
     test ah,1 (C0)
     je short 0042F248
 
-##  Divide constant
+##  Divide by constant
 
 ![eqution](doc/equations/divide_constant1.png)
+
+##  Divide by 2
+
+![eqution](doc/equations/divide_two1.png)
